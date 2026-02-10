@@ -1,66 +1,100 @@
 # PRD-Engine
 
-> מערכת Multi-Agent ליצירת אפיונים טכניים (PRD) לכל מוצר.
-> 3 סוכנים (PM, Architect, Frontend) שואלים שאלות מובנות ומייצרים מסמך אפיון מוכן לפיתוח.
+**Turn product ideas into development-ready specs in minutes, not days.**
+
+PRD-Engine is a Claude Code framework that generates complete technical specifications through structured AI conversations. Three specialized agents (PM, Architect, Frontend) ask the right questions and produce documentation that developers can code from directly.
+
+![PRD-Engine Architecture](PRD-Engine-Architecture.svg)
+
+---
+
+## The Problem
+
+Writing PRDs is slow, inconsistent, and creates gaps that developers discover mid-sprint.
+
+## The Solution
+
+PRD-Engine asks 28 structured questions across three perspectives, validates for contradictions, and outputs a single markdown file ready for any AI coding tool.
+
+```
+Your idea → 28 questions → Cross-validation → Dev-ready spec
+```
+
+---
+
+## How It Works
+
+| Agent | Focus | Questions |
+|-------|-------|-----------|
+| **PM** | Business: users, stories, KPIs | 9 |
+| **Architect** | Technical: data, APIs, validations | 8 |
+| **Frontend** | UI/UX: layouts, states, accessibility | 11 |
+
+Each epic goes through all three agents, then a 7-point cross-review catches gaps before output.
+
+---
+
+## Output
+
+One markdown file per feature containing:
+
+- **Part A** — User stories, acceptance criteria, roles, KPIs
+- **Part B** — Data models, API specs, error codes, validations
+- **Part C** — Wireframes, responsive rules, design system
+- **Part D** — Analytics events, SEO metadata, cross-review summary
+
+Hand this file to Cursor, Copilot, or any AI coding tool. No follow-up questions needed.
+
+---
 
 ## Quick Start
 
 ```bash
-# 1. שכפל את הריפו
-git clone https://github.com/user/PRD-Engine.git
+git clone https://github.com/ilaykarmani/PRD-Engine.git
 cd PRD-Engine
-
-# 2. הרץ את אשף ההתקנה
-chmod +x setup.sh
 ./setup.sh
-
-# 3. פתח ב-VSCode + Claude Code
-code .
-# בטרמינל: claude
-
-# 4. ההודעה הראשונה
-# Claude יזהה את ה-skill אוטומטית ויתחיל בפרוטוקול אתחול
-# פשוט כתוב: "בוא נתחיל לאפיין את המוצר"
 ```
 
-## מה זה עושה?
+Open in VSCode, run `claude`, and type: **"Let's spec a new feature"**
 
-PRD-Engine הוא framework ל-Claude Code שמפעיל 3 "כובעים" (agents):
+---
 
-1. **Product Manager** — שאלות עסקיות: User Stories, עדיפויות, KPIs
-2. **Architect** — שאלות טכניות: Data Model, API, Validations + Sweet Spot (MVP vs עתיד)
-3. **Frontend** — שאלות UI/UX: Layout, States, Responsive, Accessibility
+## Key Features
 
-כל epic עובר את 3 הסוכנים + Cross-Review, ונשמר כקובץ MD מוכן לפיתוח.
+- **Persistent memory** — Resume where you left off, even after restarts
+- **Source document support** — Feed it Google Docs, Notion, or plain text
+- **Cross-epic intelligence** — Knows existing entities, avoids duplication
+- **Sweet Spot tagging** — Separates MVP requirements from future recommendations
+- **Automatic saves** — Never lose progress
 
-## מבנה הפלט
+---
 
-```
-.claude/memory/epics/
-├── 01-[epic-name].md    ← קובץ אפיון מלא (Part A + B + C + D)
-├── 02-[epic-name].md    ← כל epic = מסמך עצמאי
-└── ...                  ← ניתן להעביר לכל כלי פיתוח AI
-```
+## Requirements
 
-כל קובץ epic מכיל:
-- **Part A** (PM): דרישות עסקיות, User Story, Acceptance Criteria
-- **Part B** (Architect): Data Model, API, Validations, Dependencies
-- **Part C** (Frontend): Layout, States, Responsive, Accessibility
-- **Part D** (Cross-Review): 3 הסוכנים מוודאים עקביות
-
-## מקורות מסמך נתמכים
-
-- Google Docs
-- Notion
-- Confluence
-- טקסט חופשי
-
-## דרישות
-
-- [Claude Code](https://claude.ai/code) (Pro / Max)
-- VSCode (מומלץ)
+- [Claude Code](https://claude.ai/code) (Pro/Max)
 - Git
 
-## רישיון
+---
+
+## File Structure
+
+```
+.claude/
+├── CLAUDE.md              # 18 rules that govern behavior
+├── memory/
+│   ├── checkpoint.json    # Current position
+│   ├── prd-index.json     # All epics summary
+│   └── epics/*.md         # Output files
+└── skills/prd-engine/
+    └── agents/            # PM, Architect, Frontend configs
+```
+
+---
+
+## License
 
 MIT
+
+---
+
+Built by [Ilay Karmani](https://github.com/ilaykarmani) with [Claude Code](https://claude.ai/code)
