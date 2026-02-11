@@ -125,7 +125,6 @@ if [ -n "$DOC_URL" ]; then
 fi
 echo ""
 echo "   🚀 Next step:"
-echo "   Open VSCode and launch Claude Code"
 echo "   Type: \"Let's start specifying $PRODUCT_NAME\""
 echo ""
 echo "════════════════════════════════════════════════"
