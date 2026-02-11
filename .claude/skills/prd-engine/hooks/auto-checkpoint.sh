@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # PRD-Engine - Auto Checkpoint Hook
-# טריגר: Stop — בסיום כל Session
-# מטרה: שמירת checkpoint + reflection
+# Trigger: Stop — at the end of every Session
+# Purpose: Save checkpoint + reflection
 
 MEMORY_DIR=".claude/memory"
 CHECKPOINT_FILE="$MEMORY_DIR/checkpoint.json"
@@ -20,22 +20,22 @@ if [ -f "$CHECKPOINT_FILE" ]; then
 
     echo ""
     echo "💾 ════════════════════════════════════════════════════════"
-    echo "   Checkpoint עודכן!"
+    echo "   Checkpoint updated!"
     echo "════════════════════════════════════════════════════════"
     echo ""
-    echo "📍 קובץ: $CHECKPOINT_FILE"
-    echo "⏰ זמן: $TIMESTAMP"
+    echo "📍 File: $CHECKPOINT_FILE"
+    echo "⏰ Time: $TIMESTAMP"
     echo ""
-    echo "🔍 Reflection — סוף Session"
+    echo "🔍 Reflection — Session End"
     echo "════════════════════════════════════════════════════════"
     echo ""
-    echo "   לפני סיום, בדוק:"
-    echo "   ❓ שאלות שהמשתמש לא הבין?"
-    echo "   🔄 סתירות בתשובות?"
-    echo "   ➕ שאלות שהיה צריך לשאול?"
-    echo "   🔁 דפוסים חוזרים?"
+    echo "   Before ending, check:"
+    echo "   ❓ Questions the user didn't understand?"
+    echo "   🔄 Contradictions in answers?"
+    echo "   ➕ Questions that should have been asked?"
+    echo "   🔁 Recurring patterns?"
     echo ""
-    echo "   💡 אם גילית דפוסים → עדכן lessons.md!"
+    echo "   💡 If you found patterns → update lessons.md!"
     echo ""
     echo "════════════════════════════════════════════════════════"
 else
@@ -55,7 +55,7 @@ else
 }
 EOF
     echo ""
-    echo "💾 Checkpoint נוצר (ריק — הרץ setup.sh)"
+    echo "💾 Checkpoint created (empty — run setup.sh first)"
     echo ""
 fi
 

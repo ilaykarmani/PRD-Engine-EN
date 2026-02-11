@@ -1,30 +1,30 @@
 #!/bin/bash
 
 # PRD-Engine - Status Line Script
-# מציג אחוז context בשורת הסטטוס של Claude Code CLI
-# קורא JSON מ-stdin ומציג אחוז עם אייקון צבעוני
+# Displays context percentage in Claude Code CLI status line
+# Reads JSON from stdin and displays percentage with colored icon
 
 input=$(cat)
 
-# בדוק אם jq קיים
+# Check if jq is installed
 if ! command -v jq &> /dev/null; then
     echo "[jq not installed]"
     exit 0
 fi
 
-# חלץ מידע
+# Extract information
 MODEL=$(echo "$input" | jq -r '.model.display_name // "Claude"' 2>/dev/null || echo "Claude")
 PCT=$(echo "$input" | jq -r '.context_window.used_percentage // 0' 2>/dev/null || echo "0")
 
-# וודא שיש ערך
+# Ensure there is a value
 if [ -z "$PCT" ] || [ "$PCT" = "null" ]; then
     PCT="0"
 fi
 
-# עיגול למספר שלם
+# Round to integer
 PCT_INT=$(printf "%.0f" "$PCT" 2>/dev/null || echo "0")
 
-# אייקון לפי אחוז
+# Icon by percentage
 if [ "$PCT_INT" -lt 30 ] 2>/dev/null; then
     ICON="🟢"
 elif [ "$PCT_INT" -lt 50 ] 2>/dev/null; then
@@ -35,9 +35,9 @@ else
     ICON="🔴"
 fi
 
-# שמור אחוז לקובץ (לשימוש hooks אחרים)
+# Save percentage to file (for use by other hooks)
 mkdir -p .claude/memory
 echo "$PCT_INT" > .claude/memory/context-status.txt
 
-# הצג בשורת הסטטוס
+# Display in status line
 echo "$ICON [$MODEL] Context: ${PCT}%"

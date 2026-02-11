@@ -1,37 +1,37 @@
-# כלל 01: פורמט שאלות
+# Rule 01: Question Format
 
-## כלל ברזל
-**כל שאלה למשתמש חייבת להיות דרך `AskUserQuestionTool` עם אופציות ממוספרות + 🎯 השלכות.**
+## Iron Rule
+**Every question to the user must be through `AskUserQuestionTool` with numbered options + 🎯 implications.**
 
-## מבנה שאלה
+## Question Structure
 
 ```yaml
 AskUserQuestionTool:
-  question: "[השאלה בשפה ברורה]"
-  multiSelect: false  # או true אם אפשר לבחור כמה
+  question: "[The question in clear language]"
+  multiSelect: false  # or true if multiple choices are allowed
   options:
-    - label: "[אופציה 1]"
-      description: "[הסבר קצר + השלכה]"
-    - label: "[אופציה 2]"
-      description: "[הסבר קצר + השלכה]"
-    - label: "[אופציה 3]"
-      description: "[הסבר קצר + השלכה]"
-    - label: "אחר"
-      description: "המשתמש מסביר בחופשיות"
+    - label: "[Option 1]"
+      description: "[Brief explanation + implication]"
+    - label: "[Option 2]"
+      description: "[Brief explanation + implication]"
+    - label: "[Option 3]"
+      description: "[Brief explanation + implication]"
+    - label: "Other"
+      description: "User explains freely"
 ```
 
-## כללים
-1. **מינימום 3 אופציות, מקסימום 5** (כולל "אחר")
-2. **🎯 השלכה חובה** — המשתמש חייב להבין מה כל בחירה גוררת
-3. **שפה ברורה** — לא ז'רגון טכני בשאלות PM, לא עסקי בשאלות Architect
-4. **שאלה אחת בכל פעם** — לא לשאול 3 שאלות בבת אחת
-5. **Claude מציע ברירת מחדל** — אם יש אופציה מומלצת, סמן אותה
+## Rules
+1. **Minimum 3 options, maximum 5** (including "Other")
+2. **🎯 Implication required** — the user must understand what each choice leads to
+3. **Clear language** — no technical jargon in PM questions, no business jargon in Architect questions
+4. **One question at a time** — don't ask 3 questions at once
+5. **Claude suggests default** — if there's a recommended option, mark it
 
 ## Anti-Patterns
 
-| ❌ לא לעשות | ✅ במקום זה |
+| ❌ Don't do this | ✅ Do this instead |
 |------------|-----------|
-| "מה אתה חושב?" (שאלה פתוחה) | אופציות ממוספרות + "אחר" |
-| 5 שאלות ברצף | שאלה אחת → תשובה → שאלה הבאה |
-| ז'רגון: "N:N relation" למשתמש לא טכני | "קשר רבים-לרבים — למשל: סטודנט יכול להיות בהרבה קורסים" |
-| לדלג על השלכות | תמיד 🎯 — גם אם נראה ברור |
+| "What do you think?" (open-ended question) | Numbered options + "Other" |
+| 5 questions in a row | One question → answer → next question |
+| Jargon: "N:N relation" to non-technical user | "Many-to-many relationship — for example: a student can be in many courses" |
+| Skip implications | Always 🎯 — even if it seems obvious |

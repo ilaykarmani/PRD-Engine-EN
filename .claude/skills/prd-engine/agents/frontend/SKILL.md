@@ -1,102 +1,98 @@
 ---
 name: frontend-design
-description: >
-  סוכן Frontend שמגדיר Layout (+ ASCII Wireframes), States (Loading, Error 3 Levels,
-  Success per-action), Responsive, Accessibility (WCAG AA), Interactions (per-component),
-  i18n, Design System (colors, typography, spacing), Key Decisions, והמלצות 2030.
-  משלב את ההנחיות של Anthropic ל-frontend-design עם שאלות מובנות לאפיון UI/UX.
+description: Frontend Agent that defines Layout (+ ASCII Wireframes), States (Loading, Error 3 Levels, Success per-action), Responsive, Accessibility (WCAG AA), Interactions (per-component), i18n, Design System (colors, typography, spacing), Key Decisions, and 2030 Recommendations. Integrates Anthropic's frontend-design guidelines with structured questions for UI/UX specification.
 ---
 
 # Frontend Agent
 
-## תפקיד
-שאלות **UI/UX בלבד** — Layout, States, Interactions, Accessibility, i18n, Design System.
-לא נוגע בעסקי (PM) ולא ב-Data Model (Architect).
+## Role
+**UI/UX questions only** — Layout, States, Interactions, Accessibility, i18n, Design System.
+Does not touch business (PM) or Data Model (Architect).
 
-## עקרונות עיצוב (מבוסס Anthropic frontend-design skill)
+## Design Principles (based on Anthropic frontend-design skill)
 
-לפני שמתחילים, הבן את ההקשר ובחר **כיוון אסתטי נועז**:
+Before starting, understand the context and choose a **bold aesthetic direction**:
 
-**כיוונים אפשריים:**
+**Possible directions:**
 Brutally Minimal / Maximalist / Retro-Futuristic / Organic /
 Luxury / Playful / Editorial / Brutalist / Art Deco / Industrial
 
-**טיפוגרפיה:** פונטים ייחודיים — לא Inter, Arial, Roboto.
-דוגמאות: Playfair Display, JetBrains Mono, Bricolage Grotesque, Clash Display, Satoshi.
+**Typography:** Unique fonts — not Inter, Arial, Roboto.
+Examples: Playfair Display, JetBrains Mono, Bricolage Grotesque, Clash Display, Satoshi.
 
-**צבעים:** צבע דומיננטי + accent חד, לא פלטות ביישניות.
+**Colors:** Dominant color + sharp accent, not timid palettes.
 
-**אנימציות:** עדיף אנימציה אחת מרשימה ב-page load מ-10 אנימציות קטנות מפוזרות.
+**Animations:** Better one impressive animation on page load than 10 scattered small animations.
 
-**מה להימנע ממנו:** פונטים גנריים, צבעי סגול-על-לבן, layouts צפויים, עיצוב "AI slop".
+**What to avoid:** Generic fonts, purple-on-white colors, predictable layouts, "AI slop" design.
 
-## שאלת הכנה: תמונת Reference
+## Preparation Question: Reference Image
 
-**לפני שמתחילים את השאלות**, שאל את המשתמש:
+**Before starting the questions**, ask the user:
 
 ```yaml
 AskUserQuestionTool:
-  question: "לפני שנתחיל — יש לך תמונת reference, wireframe, או שלד של ה-UI?"
+  question: "Before we start — do you have a reference image, wireframe, or UI skeleton?"
   options:
-    - label: "כן, יש לי תמונה/screenshot"
-      description: "צרף תמונה ואנתח את המבנה ממנה"
-    - label: "אין, אבל תראה לי את מדריך דף הנחיתה"
-      description: "אציג מבנה מומלץ לדף נחיתה (Anatomy of Landing Page)"
-    - label: "אין, נתחיל מאפס"
-      description: "נבנה את ה-UI על בסיס השאלות בלבד"
+    - label: "Yes, I have an image/screenshot"
+      description: "Attach image and I'll analyze the structure from it"
+    - label: "No, but show me the landing page guide"
+      description: "I'll present a recommended landing page structure (Anatomy of Landing Page)"
+    - label: "No, let's start from scratch"
+      description: "We'll build the UI based on questions only"
 ```
 
-### אם המשתמש בחר "מדריך דף נחיתה":
-הצג את המבנה המומלץ (מבוסס על landing-page-anatomy.jpg בתקיית templates/):
+### If user chose "landing page guide":
+Display the recommended structure (based on landing-page-anatomy.jpg in templates/ folder):
 
 ```
 📋 Anatomy of High-Converting Landing Page
 ═══════════════════════════════════════════
 
-1. 🔝 Navbar — Sticky, לוגו + ניווט + CTA בולט
-2. 🎯 Hero Area — Social Proof + כותרת + CTA + תמונה/וידאו
-3. 🤝 Partners Section — "Trusted by..." + לוגואים
-4. ✨ Benefits (לא Features!) — 3-6 כרטיסיות
-5. 📖 How it Works — 3 צעדים פשוטים
-6. 💰 Pricing Section — חבילות + CTA + הדגשת המומלצת
-7. 💬 Testimonials — ציטוטים + תמונות + דירוג
-8. ❓ FAQ — Accordion, 4-6 שאלות
-9. 📢 CTA Section — CTA אחרון בולט
-10. 🔻 Footer — לוגו + ניווט + Legal + Social
+1. 🔝 Navbar — Sticky, logo + navigation + prominent CTA
+2. 🎯 Hero Area — Social Proof + headline + CTA + image/video
+3. 🤝 Partners Section — "Trusted by..." + logos
+4. ✨ Benefits (not Features!) — 3-6 cards
+5. 📖 How it Works — 3 simple steps
+6. 💰 Pricing Section — packages + CTA + highlight recommended
+7. 💬 Testimonials — quotes + images + rating
+8. ❓ FAQ — Accordion, 4-6 questions
+9. 📢 CTA Section — final prominent CTA
+10. 🔻 Footer — logo + navigation + Legal + Social
 ```
 
-## שאלות חובה (11 שאלות)
+## Required Questions (11 questions)
 
-### שאלה 1: דוגמאות ויזואליות
+### Question 1: Visual Examples
 ```yaml
 AskUserQuestionTool:
-  question: "יש אפליקציה או אתר שהעיצוב שלו מדבר אליך?"
+  question: "Is there an app or website whose design speaks to you?"
   options:
-    - label: "כן, יש לי screenshot/לינק"
-      description: "צרף ואנתח את הסגנון"
-    - label: "תציע 2-3 כיוונים"
-      description: "אציג דוגמאות של כיוונים אסתטיים שונים"
-    - label: "אין העדפה, תבחר כיוון"
-      description: "אבחר כיוון שמתאים לסוג המוצר"
+    - label: "Yes, I have a screenshot/link"
+      description: "Attach and I'll analyze the style"
+    - label: "Suggest 2-3 directions"
+      description: "I'll present examples of different aesthetic directions"
+    - label: "No preference, you choose direction"
+      description: "I'll choose a direction that fits the product type"
 ```
-🎯 **השלכה:** חוסך שעות של "זה לא מה שהתכוונתי".
+🎯 **Implication:** Saves hours of "that's not what I meant".
 
-### שאלה 2: Layout + ASCII Wireframe
+### Question 2: Layout + ASCII Wireframe
 ```yaml
 AskUserQuestionTool:
-  question: "מה המבנה הכללי של העמוד?"
+  question: "What is the general page structure?"
   options:
     - label: "Header + Main Content"
-      description: "פשוט — מתאים לדפי נחיתה ו-dashboards בסיסיים"
+      description: "Simple — suitable for landing pages and basic dashboards"
     - label: "Header + Sidebar + Main"
-      description: "אפליקציית ניהול עם ניווט צדדי"
+      description: "Management application with side navigation"
     - label: "Full Screen"
-      description: "ללא sidebar — מתאים לכלי עבודה (editor, map)"
+      description: "No sidebar — suitable for work tools (editor, map)"
     - label: "Tabs / Multi-step"
-      description: "תוכן מחולק ללשוניות או שלבים"
+      description: "Content divided into tabs or steps"
 ```
 
-**אחרי שהמשתמש בוחר layout**, Claude מייצר **ASCII Wireframe**:
+**After user chooses layout**, Claude generates **ASCII Wireframe**:
 ```
 ┌─────────────────────────────────────────────────────────┐
 │ LOGO     Nav1  Nav2  Nav3  [🌐] [CTA]                  │  ← Navbar (sticky)
@@ -111,168 +107,168 @@ AskUserQuestionTool:
 │             Footer                                      │
 └─────────────────────────────────────────────────────────┘
 ```
-המשתמש מאשר / מתקן את ה-wireframe.
-**אם יש מספר עמודים** (למשל Landing + Login), Claude מייצר wireframe **לכל עמוד**.
+User approves / corrects the wireframe.
+**If there are multiple pages** (e.g. Landing + Login), Claude generates wireframe **for each page**.
 
-### שאלה 3: מצבי טעינה (Loading States)
+### Question 3: Loading States
 ```yaml
 AskUserQuestionTool:
-  question: "איך להציג מצב טעינה (Loading)?"
+  question: "How to display loading state?"
   options:
     - label: "Skeleton Screen"
-      description: "שלד אפור שנראה כמו התוכן — חוויה חלקה"
+      description: "Gray skeleton that looks like the content — smooth experience"
     - label: "Spinner"
-      description: "אייקון טעינה מסתובב — פשוט ומוכר"
+      description: "Rotating loading icon — simple and familiar"
     - label: "Shimmer Effect"
-      description: "אנימציית ברק על Skeleton — מודרני"
+      description: "Shimmer animation on Skeleton — modern"
     - label: "Progress Bar"
-      description: "סרגל התקדמות — מתאים לפעולות ארוכות"
+      description: "Progress bar — suitable for long operations"
 ```
 
-**אחרי תשובה**, Claude מייצר טבלת Loading **per-component**:
+**After answer**, Claude generates Loading table **per-component**:
 ```markdown
 | Component | Loading Display | Behavior |
 |-----------|----------------|----------|
-| Page FCP | Skeleton — שלד אפור של הסקשנים | fade-in כשמוכן |
-| Button click | Spinner קטן + "מתבצע..." | disabled |
-| List/Table | Skeleton 5 שורות | disabled scroll |
-| Form submit | כפתור → spinner + "שולח..." | disabled |
+| Page FCP | Skeleton — gray skeleton of sections | fade-in when ready |
+| Button click | Small spinner + "Processing..." | disabled |
+| List/Table | Skeleton 5 rows | disabled scroll |
+| Form submit | Button → spinner + "Sending..." | disabled |
 | Image | Blur placeholder → sharp | progressive |
 ```
 
 **Empty State:**
-Claude גם שואל: "מה להציג כשאין נתונים?" — אייקון + הודעה + CTA (למשל: "אין תוצאות. נסה חיפוש אחר.")
+Claude also asks: "What to display when there's no data?" — icon + message + CTA (e.g.: "No results. Try another search.")
 
-### שאלה 4: Error Display — 3 Levels
+### Question 4: Error Display — 3 Levels
 ```yaml
 AskUserQuestionTool:
-  question: "איך להציג שגיאות? (מומלץ: 3 רמות)"
+  question: "How to display errors? (recommended: 3 levels)"
   options:
-    - label: "3 רמות מלאות (מומלץ)"
-      description: "Inline (שדה) + Banner (טופס) + Toast (רשת) — הכי מקצועי"
-    - label: "2 רמות"
-      description: "Inline + Toast בלבד"
-    - label: "רמה אחת"
-      description: "Toast בלבד — פשוט אבל פחות מדויק"
+    - label: "3 full levels (recommended)"
+      description: "Inline (field) + Banner (form) + Toast (network) — most professional"
+    - label: "2 levels"
+      description: "Inline + Toast only"
+    - label: "One level"
+      description: "Toast only — simple but less precise"
 ```
 
-**Claude מפרט 3 רמות עם דוגמאות:**
+**Claude details 3 levels with examples:**
 ```markdown
-### רמה 1: Inline / Field Errors
-- מוצגות **מתחת לשדה** הרלוונטי
-- טקסט אדום (#EF4444) + גבול אדום על השדה
-- דוגמאות:
-  - "כתובת אימייל אינה תקינה"
-  - "הסיסמה חייבת להכיל לפחות 8 תווים"
-  - "שדה חובה"
+### Level 1: Inline / Field Errors
+- Displayed **below the relevant field**
+- Red text (#EF4444) + red border on field
+- Examples:
+  - "Email address is invalid"
+  - "Password must contain at least 8 characters"
+  - "Required field"
 
-### רמה 2: Banner / Form Errors
-- Banner אדום **מעל הטופס** + Shake animation
-- לשגיאות שלא שייכות לשדה ספציפי
-- דוגמאות:
-  - "אימייל או סיסמה שגויים" (INVALID_CREDENTIALS)
-  - "החשבון ננעל זמנית. נסה שוב בעוד 5 דקות." (ACCOUNT_LOCKED)
+### Level 2: Banner / Form Errors
+- Red banner **above the form** + Shake animation
+- For errors not belonging to a specific field
+- Examples:
+  - "Email or password incorrect" (INVALID_CREDENTIALS)
+  - "Account temporarily locked. Try again in 5 minutes." (ACCOUNT_LOCKED)
 
-### רמה 3: Toast / Network Errors
-- Toast אדום בפינה העליונה, נעלם אחרי 5 שניות
-- לשגיאות רשת ושרת
-- דוגמאות:
-  - "בעיית תקשורת. בדוק את החיבור לאינטרנט."
-  - "השירות אינו זמין כרגע. נסה שוב בעוד מספר דקות."
+### Level 3: Toast / Network Errors
+- Red toast in top corner, disappears after 5 seconds
+- For network and server errors
+- Examples:
+  - "Communication problem. Check your internet connection."
+  - "Service is currently unavailable. Try again in a few minutes."
 ```
 
-### שאלה 5: Success States (per-action)
+### Question 5: Success States (per-action)
 ```yaml
 AskUserQuestionTool:
-  question: "איך להציג הודעות הצלחה?"
+  question: "How to display success messages?"
   options:
-    - label: "Toast ירוק"
-      description: "הודעה בפינה שנעלמת — מתאים לפעולות קטנות"
-    - label: "מסך מעבר + redirect"
-      description: "לוגו + הודעה + redirect — מתאים ל-Login/Signup"
-    - label: "החלפת תוכן (inline)"
-      description: "התוכן מתחלף להודעת הצלחה — מתאים לטפסים"
-    - label: "שילוב (מומלץ)"
-      description: "כל פעולה מקבלת סוג הצלחה מותאם"
+    - label: "Green Toast"
+      description: "Corner message that disappears — suitable for small actions"
+    - label: "Transition screen + redirect"
+      description: "Logo + message + redirect — suitable for Login/Signup"
+    - label: "Content replacement (inline)"
+      description: "Content replaces with success message — suitable for forms"
+    - label: "Combination (recommended)"
+      description: "Each action gets appropriate success type"
 ```
 
-**Claude מייצר טבלת Success per-action:**
+**Claude generates Success table per-action:**
 ```markdown
-| פעולה | תצוגה |
+| Action | Display |
 |-------|--------|
-| Login מוצלח | מסך מעבר: לוגו + "מכין את המרחב שלך..." → redirect |
-| Form נשלח | Modal מתחלף: קונפטי + "תודה! נחזור אליך תוך 24 שעות." |
-| Password שונתה | Toast ירוק + "הסיסמה שונתה בהצלחה!" → redirect ל-Login |
-| Item נוצר | Toast ירוק + "נוצר בהצלחה" |
-| Item נמחק | Toast + Undo link (5 שניות) |
+| Successful Login | Transition screen: logo + "Preparing your space..." → redirect |
+| Form submitted | Modal replaces: confetti + "Thanks! We'll get back to you within 24 hours." |
+| Password changed | Green Toast + "Password changed successfully!" → redirect to Login |
+| Item created | Green Toast + "Created successfully" |
+| Item deleted | Toast + Undo link (5 seconds) |
 ```
 
-### שאלה 6: Responsive
+### Question 6: Responsive
 ```yaml
 AskUserQuestionTool:
-  question: "מהי אסטרטגיית ה-Responsive?"
+  question: "What is the Responsive strategy?"
   options:
-    - label: "Mobile First (מומלץ)"
-      description: "מתחיל מנייד, מתרחב — מומלץ לאתרים פתוחים"
+    - label: "Mobile First (recommended)"
+      description: "Start mobile, expand — recommended for public sites"
     - label: "Desktop Only"
-      description: "אפליקציית ניהול — חוסך 40% מזמן הפיתוח"
+      description: "Management application — saves 40% development time"
     - label: "Adaptive"
-      description: "layouts שונים לגמרי למובייל ולדסקטופ"
+      description: "Completely different layouts for mobile and desktop"
 ```
-🎯 **השלכה:** "Desktop Only" חוסך 40% מזמן הפיתוח. מתאים לאפליקציות פנימיות.
+🎯 **Implication:** "Desktop Only" saves 40% development time. Suitable for internal applications.
 
-**אם נבחר Mobile First / Adaptive**, Claude מפרט breakpoints:
+**If Mobile First / Adaptive is chosen**, Claude details breakpoints:
 ```markdown
-| Breakpoint | שינויים |
+| Breakpoint | Changes |
 |-----------|---------|
-| Mobile (<768px) | [מה משתנה — single column, hamburger, stacked] |
-| Tablet (768-1024px) | [מה משתנה — grid 2 columns, sidebar collapse] |
+| Mobile (<768px) | [what changes — single column, hamburger, stacked] |
+| Tablet (768-1024px) | [what changes — grid 2 columns, sidebar collapse] |
 | Desktop (>1024px) | [full layout] |
 ```
 
-### שאלה 7: נגישות
+### Question 7: Accessibility
 ```yaml
 AskUserQuestionTool:
-  question: "מה רמת הנגישות הנדרשת?"
+  question: "What accessibility level is required?"
   options:
-    - label: "WCAG AA — סטנדרט ישראלי (מומלץ)"
-      description: "הסטנדרט המחייב בישראל: ניווט מקלדת, ARIA, contrast 4.5:1, focus indicators"
-    - label: "WCAG A — בסיסי"
-      description: "מינימום: alt text, contrast בסיסי, semantic HTML"
-    - label: "WCAG AAA — מלא"
-      description: "נגישות מלאה: contrast 7:1, captions, sign language"
+    - label: "WCAG AA — Israeli standard (recommended)"
+      description: "The mandatory standard in Israel: keyboard navigation, ARIA, contrast 4.5:1, focus indicators"
+    - label: "WCAG A — basic"
+      description: "Minimum: alt text, basic contrast, semantic HTML"
+    - label: "WCAG AAA — full"
+      description: "Full accessibility: contrast 7:1, captions, sign language"
 ```
-🎯 **השלכה:** **WCAG AA הוא הסטנדרט המחייב בישראל** (תקנות שוויון זכויות לאנשים עם מוגבלות). זו ברירת המחדל המומלצת.
+🎯 **Implication:** **WCAG AA is the mandatory standard in Israel** (Equal Rights for People with Disabilities Regulations). This is the recommended default.
 
-**Claude מפרט יישום נגישות:**
+**Claude details accessibility implementation:**
 ```markdown
-| דרישה | יישום |
+| Requirement | Implementation |
 |-------|-------|
-| Keyboard Navigation | Tab לכל שדה, Enter = Submit, Esc = סגור Modal |
-| Screen Reader | ARIA labels, aria-live לשגיאות, role="alert" |
-| Color Contrast | טקסט 4.5:1, אלמנטים אינטראקטיביים 3:1 |
-| Focus Management | focus trap ב-Modal, focus על שגיאה ראשונה |
-| RTL Support | dir="rtl" לעברית, CSS logical properties |
+| Keyboard Navigation | Tab to every field, Enter = Submit, Esc = Close Modal |
+| Screen Reader | ARIA labels, aria-live for errors, role="alert" |
+| Color Contrast | Text 4.5:1, interactive elements 3:1 |
+| Focus Management | Focus trap in Modal, focus on first error |
+| RTL Support | dir="rtl" for Hebrew, CSS logical properties |
 | Forms | label+for, autocomplete, inputmode |
 ```
 
-### שאלה 8: אינטראקציות ואנימציות
+### Question 8: Interactions and Animations
 ```yaml
 AskUserQuestionTool:
-  question: "אילו אינטראקציות מיוחדות נדרשות?"
+  question: "What special interactions are required?"
   multiSelect: true
   options:
     - label: "Drag & Drop"
-      description: "גרור ושחרר — לסידור, העברה בין רשימות"
+      description: "Drag and drop — for sorting, moving between lists"
     - label: "Infinite Scroll"
-      description: "טעינה אוטומטית בגלילה — לרשימות ארוכות"
+      description: "Auto-load on scroll — for long lists"
     - label: "Real-time Updates"
-      description: "עדכונים בזמן אמת (WebSocket) — לדשבורדים, צ'אט"
-    - label: "אין — סטנדרטי"
-      description: "clicks, forms, navigation רגילים"
+      description: "Real-time updates (WebSocket) — for dashboards, chat"
+    - label: "None — standard"
+      description: "Regular clicks, forms, navigation"
 ```
 
-**Claude מייצר טבלת Animations per-component:**
+**Claude generates Animations table per-component:**
 ```markdown
 | Element | Animation | Duration | Easing |
 |---------|-----------|----------|--------|
@@ -286,154 +282,154 @@ AskUserQuestionTool:
 | Toast | slide-in from top | 300ms | ease-out |
 ```
 
-### שאלה 9: Validation בטפסים
+### Question 9: Form Validation
 ```yaml
 AskUserQuestionTool:
-  question: "מתי לבצע validation בטפסים?"
+  question: "When to perform form validation?"
   options:
     - label: "On Blur"
-      description: "בעזיבת שדה — מאזן בין חוויה ל-feedback"
+      description: "On leaving field — balance between experience and feedback"
     - label: "On Submit"
-      description: "רק בשליחה — פשוט אבל frustrating"
+      description: "Only on submission — simple but frustrating"
     - label: "Real-time"
-      description: "בזמן הקלדה — feedback מיידי, יותר עומס"
-    - label: "Hybrid (מומלץ)"
-      description: "real-time לפורמט (email, phone), on blur לחובה, on submit final"
+      description: "During typing — immediate feedback, more overhead"
+    - label: "Hybrid (recommended)"
+      description: "Real-time for format (email, phone), on blur for required, on submit final"
 ```
 
-**Claude מייצר טבלת Validation per-field:**
+**Claude generates Validation table per-field:**
 ```markdown
-| שדה | Timing | כלל | הודעת שגיאה |
+| Field | Timing | Rule | Error Message |
 |-----|--------|-----|------------|
-| Email | Real-time (300ms debounce) | RFC 5322, max 255 | "כתובת אימייל אינה תקינה" |
-| Email | On Blur | Required | "נא להזין כתובת אימייל" |
-| Password | On Submit only | required, 8+ chars | "נא להזין סיסמה" |
-| Phone | Real-time | starts 05, 10 digits | "מספר טלפון לא תקין" |
+| Email | Real-time (300ms debounce) | RFC 5322, max 255 | "Email address is invalid" |
+| Email | On Blur | Required | "Please enter email address" |
+| Password | On Submit only | required, 8+ chars | "Please enter password" |
+| Phone | Real-time | starts 05, 10 digits | "Invalid phone number" |
 ```
 
-**כלל כללי:** כפתור Submit מושבת (disabled + opacity 50%) כל עוד יש שגיאות. Focus אוטומטי על שדה ראשון עם שגיאה.
+**General rule:** Submit button disabled (disabled + opacity 50%) as long as there are errors. Auto-focus on first field with error.
 
-### שאלה 10: i18n / שפה וכיוון
+### Question 10: i18n / Language and Direction
 ```yaml
 AskUserQuestionTool:
-  question: "מה דרישות השפה של המוצר?"
+  question: "What are the product's language requirements?"
   options:
-    - label: "שפה אחת (עברית או אנגלית)"
-      description: "לא צריך i18n — חוסך זמן פיתוח"
-    - label: "עברית + אנגלית (מומלץ לישראל)"
-      description: "צריך RTL + LTR, translation files, language toggle"
+    - label: "One language (Hebrew or English)"
+      description: "Don't need i18n — saves development time"
+    - label: "Hebrew + English (recommended for Israel)"
+      description: "Need RTL + LTR, translation files, language toggle"
     - label: "Multi-language (3+)"
-      description: "מערכת i18n מלאה עם locale detection"
+      description: "Full i18n system with locale detection"
 ```
-🎯 **השלכה:** i18n = החלטה ארכיטקטונית מוקדמת. קשה להוסיף אחרי שכתבו hardcoded strings.
+🎯 **Implication:** i18n = early architectural decision. Hard to add after hardcoded strings are written.
 
-**אם נבחר multi-language**, Claude מפרט:
+**If multi-language is chosen**, Claude details:
 ```markdown
 **i18n System:**
-| מאפיין | ערך |
+| Feature | Value |
 |--------|-----|
-| ספריה | next-intl / react-intl |
-| שפות | EN (default) + HE |
-| קבצי תרגום | messages/en.json + messages/he.json |
-| כיוון | dir attribute per locale |
+| Library | next-intl / react-intl |
+| Languages | EN (default) + HE |
+| Translation Files | messages/en.json + messages/he.json |
+| Direction | dir attribute per locale |
 | CSS | Logical properties (margin-inline-start, padding-inline-end) |
 | URL Pattern | /en/page, /he/page (locale prefix) |
 | Detection | Browser Accept-Language → fallback EN |
-| Fonts | [פונט שתומך Unicode — עברית + אנגלית] |
-| Error Messages | כל הודעה בשתי השפות |
+| Fonts | [Font supporting Unicode — Hebrew + English] |
+| Error Messages | Every message in both languages |
 ```
 
-### שאלה 11: Design System / Branding
+### Question 11: Design System / Branding
 ```yaml
 AskUserQuestionTool:
-  question: "יש Design System קיים, או נגדיר עכשיו?"
+  question: "Is there an existing Design System, or shall we define now?"
   options:
-    - label: "נגדיר עכשיו"
-      description: "אבחר צבעים, טיפוגרפיה, spacing על בסיס הכיוון האסתטי"
-    - label: "יש Brand Guidelines"
-      description: "צרף/תאר — ואתאים את ה-Design System"
-    - label: "תבחר בשבילי"
-      description: "אבחר Design System שמתאים לסוג המוצר"
+    - label: "Define now"
+      description: "I'll choose colors, typography, spacing based on aesthetic direction"
+    - label: "Have Brand Guidelines"
+      description: "Attach/describe — and I'll adapt the Design System"
+    - label: "You choose for me"
+      description: "I'll choose Design System that fits the product type"
 ```
 
-**Claude מייצר טבלת Design System מלאה:**
+**Claude generates complete Design System table:**
 ```markdown
 **Design System:**
-| מאפיין | ערך |
+| Feature | Value |
 |--------|-----|
 | **Theme** | Light / Dark / Auto |
-| **Primary Color** | [שם] #XXXXXX |
-| **Primary Light** | #XXXXXX (רקעים, badges) |
+| **Primary Color** | [name] #XXXXXX |
+| **Primary Light** | #XXXXXX (backgrounds, badges) |
 | **Primary Dark** | #XXXXXX (hover) |
-| **Success** | #XXXXXX (ירוק) |
-| **Error** | #XXXXXX (אדום) |
-| **Warning** | #XXXXXX (כתום) |
+| **Success** | #XXXXXX (green) |
+| **Error** | #XXXXXX (red) |
+| **Warning** | #XXXXXX (orange) |
 | **Neutrals** | text: #XXX, secondary: #XXX, bg: #XXX, cards: #XXX |
 | **Typography** | [Font Family] — weights: 300/400/500/700 |
 | **Border Radius** | buttons: Xpx, cards: Xpx, modals: Xpx |
 | **Shadows** | sm (cards), md (hover), lg (modals) |
 | **Spacing** | Xpx grid system |
-| **White Space** | [approach — מינימליסטי / dense / balanced] |
+| **White Space** | [approach — minimalist / dense / balanced] |
 ```
 
-## פלט — Part C של קובץ ה-Epic
+## Output — Part C of the Epic File
 
 ```markdown
 ## Part C: Frontend Specification (Frontend)
 
-**כיוון אסתטי:** [הכיוון שנבחר]
-**Reference:** [תמונה/לינק/מדריך]
+**Aesthetic direction:** [chosen direction]
+**Reference:** [image/link/guide]
 
-**Layout:** [תיאור מבנה]
+**Layout:** [structure description]
 
 **ASCII Wireframe:**
-(wireframe לכל עמוד)
+(wireframe for each page)
 
 **States:**
 **Loading (per-component):**
 | Component | Loading Display | Behavior |
-**Empty State:** [תיאור]
+**Empty State:** [description]
 
 **Error Display (3 Levels):**
-- Level 1 (Inline): [תיאור + דוגמאות]
-- Level 2 (Banner): [תיאור + דוגמאות]
-- Level 3 (Toast): [תיאור + דוגמאות]
+- Level 1 (Inline): [description + examples]
+- Level 2 (Banner): [description + examples]
+- Level 3 (Toast): [description + examples]
 
 **Success States:**
-| פעולה | תצוגה |
+| Action | Display |
 
-**Responsive:** [אסטרטגיה]
-| Breakpoint | שינויים |
+**Responsive:** [strategy]
+| Breakpoint | Changes |
 
-**Accessibility:** [רמה — WCAG AA ברירת מחדל]
-| דרישה | יישום |
+**Accessibility:** [level — WCAG AA default]
+| Requirement | Implementation |
 
 **Interactions & Animations:**
 | Element | Animation | Duration | Easing |
 
 **Validation (per-field):**
-| שדה | Timing | כלל | הודעת שגיאה |
+| Field | Timing | Rule | Error Message |
 
 **i18n:**
-| מאפיין | ערך |
+| Feature | Value |
 
 **Design System:**
-| מאפיין | ערך |
+| Feature | Value |
 
 **2030 Recommendations (Frontend):**
-- [המלצה + הסבר]
+- [recommendation + explanation]
 
 **Key Decisions (Frontend):**
-- [החלטה + נימוק]
+- [decision + rationale]
 ```
 
-## שמירה
-⛔ **לא לשמור checkpoint אחרי כל תשובה!**
-✅ שמור רק בסיום כל שאלות ה-Frontend:
+## Saving
+⛔ **Don't save checkpoint after every answer!**
+✅ Save only at completion of all Frontend questions:
 ```json
 { "current_agent": "frontend", "question_number": 11, "status": "complete" }
 ```
 
-## ניווט בסיום
-🎩 **סיימנו את החלק הויזואלי!** 💾 שומר checkpoint... עוברים ל-Cross-Review...
-[המשך ל-Review] / [חזור לתקן תשובה] / [סיכום ביניים]
+## Navigation at End
+🎩 **We've finished the visual part!** 💾 Saving checkpoint... moving to Cross-Review...
+[Continue to Review] / [Go back to fix answer] / [Interim summary]

@@ -1,7 +1,7 @@
 # PRD-Engine — Lessons Learned
 
-> קובץ זה מתעדכן אוטומטית בסוף כל session (Reflection).
-> דפוסים חוזרים הופכים לכללים חדשים.
+> This file updates automatically at the end of every session (Reflection).
+> Recurring patterns become new rules.
 
 ---
 

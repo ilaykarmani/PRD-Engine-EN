@@ -1,59 +1,59 @@
-# כלל 03: Reflection — למידה מצטברת
+# Rule 03: Reflection — Cumulative Learning
 
-## כלל ברזל
-**בסוף כל Session (טריגר Stop), Claude חייב לסכם מה למד ולעדכן lessons.md אם יש דפוסים חדשים.**
+## Iron Rule
+**At the end of every Session (Stop trigger), Claude must summarize what was learned and update lessons.md if there are new patterns.**
 
-## מתי מופעל
-- **אוטומטי:** ה-hook `auto-checkpoint.sh` מציג תזכורת Reflection
-- **ידני:** המשתמש יכול לבקש "סיכום למידה" בכל רגע
+## When Activated
+- **Automatic:** The `auto-checkpoint.sh` hook displays a Reflection reminder
+- **Manual:** The user can request "learning summary" at any moment
 
-## 4 נקודות לבדיקה
+## 4 Points to Check
 
-### 1. שאלות שלא הובנו
+### 1. Questions Not Understood
 ```
-❓ האם היו שאלות שהמשתמש ביקש הסבר נוסף?
-   → אם כן: נסח מחדש ב-lessons.md
-```
-
-### 2. סתירות בתשובות
-```
-🔄 האם היו סתירות בין תשובות שונות?
-   → אם כן: תעד את הדפוס ואיך נפתר
+❓ Were there questions where the user requested additional explanation?
+   → If yes: rephrase in lessons.md
 ```
 
-### 3. שאלות שחסרו
+### 2. Contradictions in Answers
 ```
-➕ האם הייתה שאלה שהיה צריך לשאול ולא שאלנו?
-   → אם כן: הוסף לרשימת השאלות של ה-Agent הרלוונטי
-```
-
-### 4. דפוסים חוזרים
-```
-🔁 האם יש דפוס שחוזר על עצמו בין epics?
-   → אם כן: צור כלל חדש או עדכן קיים
+🔄 Were there contradictions between different answers?
+   → If yes: document the pattern and how it was resolved
 ```
 
-## פורמט עדכון lessons.md
+### 3. Missing Questions
+```
+➕ Was there a question that should have been asked but wasn't?
+   → If yes: add to the question list of the relevant Agent
+```
+
+### 4. Recurring Patterns
+```
+🔁 Is there a pattern that repeats itself between epics?
+   → If yes: create a new rule or update an existing one
+```
+
+## lessons.md Update Format
 
 ```markdown
-## תאריך: [DD/MM/YYYY]
+## Date: [DD/MM/YYYY]
 
-### Session: [שם ה-epic שעבדנו עליו]
+### Session: [name of the epic we worked on]
 
-### ❌ בעיה:
-[תיאור קצר]
+### ❌ Problem:
+[brief description]
 
-### 🔍 דפוס:
-[מה גרם לבעיה]
+### 🔍 Pattern:
+[what caused the problem]
 
-### ✅ פתרון:
-[איך למנוע בפעם הבאה]
+### ✅ Solution:
+[how to prevent next time]
 ```
 
 ## Anti-Patterns
 
-| ❌ לא לעשות | ✅ במקום זה |
+| ❌ Don't Do | ✅ Do Instead |
 |------------|-----------|
-| "הכל עבד מצוין" בלי לבדוק | לעבור על כל 4 הנקודות |
-| lessons ארוכים מדי | משפט אחד לכל דפוס |
-| לשנות כללים בלי אישור | הצע שינוי, חכה לאישור |
+| "Everything worked great" without checking | Go through all 4 points |
+| lessons too long | One sentence per pattern |
+| Change rules without approval | Suggest change, wait for approval |

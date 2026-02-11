@@ -1,19 +1,19 @@
-# PRD-Engine System — ארכיטקטורה מלאה
+# PRD-Engine System — Complete Architecture
 
-> מדריך ויזואלי שמסביר איך PRD-Engine עובד מאחורי הקלעים.
-> גרסה: 2.1.0 | תאריך: פברואר 2026
+> Visual guide explaining how PRD-Engine works behind the scenes.
+> Version: 2.1.0 | Date: February 2026
 
 ---
 
-## 🔗 איך הכל מתחבר
+## 🔗 How Everything Connects
 
 ```
 ┌──────────────────────────────────────────────────────┐
 │                                                      │
-│            🤖 CLAUDE  (אני)                          │
-│            ה-Orchestrator הראשי                       │
+│            🤖 CLAUDE  (me)                           │
+│            The Main Orchestrator                     │
 │                                                      │
-│   קורא: CLAUDE.md → יודע את כל הכללים והקונטקסט     │
+│   Reads: CLAUDE.md → Knows all rules and context    │
 │                                                      │
 └──────────────────────┬───────────────────────────────┘
                        │
@@ -25,59 +25,60 @@
 │  (Product    │ │  (Backend)   │ │    (UI)      │
 │   Manager)   │ │              │ │              │
 │              │ │              │ │              │
-│ זה לא סוכן  │ │  זה לא סוכן │ │  זה לא סוכן │
-│ נפרד - זה   │ │  נפרד - זה  │ │  נפרד - זה  │
-│ "כובע" שאני │ │ "כובע" שאני │ │ "כובע" שאני │
-│ שם על עצמי  │ │ שם על עצמי  │ │ שם על עצמי  │
+│ NOT a        │ │ NOT a        │ │ NOT a        │
+│ separate     │ │ separate     │ │ separate     │
+│ agent - it's │ │ agent - it's │ │ agent - it's │
+│ a "hat" I    │ │ a "hat" I    │ │ a "hat" I    │
+│ wear         │ │ wear         │ │ wear         │
 └──────────────┘ └──────────────┘ └──────────────┘
 ```
 
-**הרעיון:** Claude הוא מוח אחד שמחליף "כובעים". כשהוא PM — הוא שואל שאלות עסקיות. כשהוא Architect — שאלות טכניות. כשהוא Frontend — שאלות UI/UX. אבל תמיד אותו Claude.
+**The Concept:** Claude is a single brain that switches "hats". When it's PM — it asks business questions. When it's Architect — technical questions. When it's Frontend — UI/UX questions. But always the same Claude.
 
 ---
 
-## 🎩 PM / Architect / Frontend = "כובעים", לא סוכנים נפרדים
+## 🎩 PM / Architect / Frontend = "Hats", Not Separate Agents
 
-**הבנה חשובה:** כשאני "PM", אני לא מפעיל סוכן אחר — אני פשוט קורא את ה-SKILL.md של PM ומתנהג לפיו.
+**Key Understanding:** When I'm "PM", I'm not running another agent — I simply read the PM's SKILL.md and behave accordingly.
 
 ```
-משתמש: "בוא נאפיין מערכת Login"
+User: "Let's spec a Login system"
     │
     ▼
-אני (Claude): קורא product-manager/SKILL.md
+Me (Claude): reads product-manager/SKILL.md
     │
     ▼
-שואל 9 שאלות עסקיות: "אני עכשיו PM"
+Asks 9 business questions: "I'm now PM"
     │
     ▼
-🎩 "עוברים ל-Architect!"
-אני (Claude): קורא architect/SKILL.md
+🎩 "Switching to Architect!"
+Me (Claude): reads architect/SKILL.md
     │
     ▼
-שואל 8 שאלות טכניות: "אני עכשיו Architect"
+Asks 8 technical questions: "I'm now Architect"
     │
     ▼
-🎩 "עוברים ל-Frontend!"
-אני (Claude): קורא frontend/SKILL.md
+🎩 "Switching to Frontend!"
+Me (Claude): reads frontend/SKILL.md
     │
     ▼
-שואל 11+1 שאלות UI: "אני עכשיו Frontend"
+Asks 11+1 UI questions: "I'm now Frontend"
     │
     ▼
-וכך הלאה ...
+And so on...
 ```
 
-**למה זה חשוב?** כי כל ה-context נשאר אצלי. אני זוכר מה PM שאל, ואני יכול לשלב את זה כש-Architect שואל. אין "העברת מידע" בין סוכנים — הכל אצלי.
+**Why is this important?** Because all the context stays with me. I remember what PM asked, and I can incorporate that when Architect asks. There's no "data transfer" between agents — everything is with me.
 
 ---
 
-## 🔧 Sub-Agents (Task Tool) = משהו אחר לגמרי!
+## 🔧 Sub-Agents (Task Tool) = Something Completely Different!
 
-Sub-Agent הוא כן סוכן נפרד שרץ במקביל:
+A Sub-Agent IS a separate agent that runs in parallel:
 
 ```
 ┌──────────────────────────────────────────────────────┐
-│              🤖 CLAUDE  (אני)                        │
+│              🤖 CLAUDE  (me)                         │
 │              Context Window: 200K tokens             │
 └──────────────────────┬───────────────────────────────┘
                        │
@@ -87,125 +88,125 @@ Sub-Agent הוא כן סוכן נפרד שרץ במקביל:
 ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
 │ Sub-Agent 1  │ │ Sub-Agent 2  │ │ Sub-Agent 3  │
 │              │ │              │ │              │
-│ "מצא מה     │ │ "בדוק את    │ │ "חקור       │
-│  יש ב       │ │  ה-API של   │ │  דוגמאות    │
-│  epics/"    │ │  המתחרים"   │ │  דומות"     │
+│ "Find what's │ │ "Check the   │ │ "Research    │
+│  in          │ │  competitors'│ │  similar     │
+│  epics/"     │ │  API"        │ │  examples"   │
 │              │ │              │ │              │
-│ Context      │ │ Context      │ │ Context      │
-│ נפרד!       │ │ נפרד!       │ │ נפרד!       │
+│ Context:     │ │ Context:     │ │ Context:     │
+│ SEPARATE!    │ │ SEPARATE!    │ │ SEPARATE!    │
 └──────┬───────┘ └──────┬───────┘ └──────┬───────┘
        │                │                │
        └────────────────┼────────────────┘
                         │
                         ▼
-              מחזירים לי תוצאות
-          (ה-Context שלי נשאר נקי!)
+              Return results to me
+          (My Context stays clean!)
 ```
 
-**למה זה טוב?**
-- ה-Context הראשי שלי לא מתמלא ב"זבל" של מחקר
-- Sub-Agents יכולים לרוץ במקביל
-- כל אחד מקבל Context נקי משלו
+**Why is this good?**
+- My main Context doesn't fill up with research "junk"
+- Sub-Agents can run in parallel
+- Each one gets its own clean Context
 
-**כלל ברזל:** כל סאב-אייגנט חייב `model: "sonnet"` — אף פעם לא Haiku, אף פעם לא Opus!
+**Iron Rule:** Every sub-agent must have `model: "sonnet"` — never Haiku, never Opus!
 
-**4 תרחישים שחייבים סאב-אייגנט:**
+**4 Scenarios that require a Sub-Agent:**
 
-| # | תרחיש | סוג | מה עושה |
-|---|--------|-----|---------|
-| 1 | תחילת Session / אחרי compact | `Explore` | קורא כל הקבצים + מחזיר סיכום 60 שורות |
-| 2 | קריאת מסמך מקור (DOC_SOURCE) | `Explore` | קורא מסמך גדול + מחזיר סיכום דרישות |
-| 3 | בדיקת קישורים בין epics | `Explore` | בודק epics קיימים + מזהה חפיפות |
-| 4 | Cross-Review צולב | `general-purpose` | מנתח סתירות בין 3 ה-Agents |
+| # | Scenario | Type | What it does |
+|---|----------|------|--------------|
+| 1 | Session start / after compact | `Explore` | Reads all files + returns 60-line summary |
+| 2 | Reading source document (DOC_SOURCE) | `Explore` | Reads large document + returns requirements summary |
+| 3 | Checking links between epics | `Explore` | Checks existing epics + identifies overlaps |
+| 4 | Cross-Agent Review | `general-purpose` | Analyzes contradictions between 3 Agents |
 
 ---
 
-## 📄 DOC_SOURCE = מסמך המקור
+## 📄 DOC_SOURCE = The Source Document
 
-**בתחילת כל אפיון חדש**, המשתמש מספק קישור למסמך הדרישות שלו (Google Doc, Notion, וכו׳).
+**At the start of every new specification**, the user provides a link to their requirements document (Google Doc, Notion, etc.).
 
 ```
 ┌──────────────────────────────────────────────────────┐
 │                                                      │
-│  📄 DOC_SOURCE = קריאה בלבד!                        │
+│  📄 DOC_SOURCE = READ-ONLY!                         │
 │                                                      │
-│  • זה ה"מקור האמת" של הדרישות                       │
-│  • אסור לשנות — כי זה מה שהמשתמש הביא              │
-│  • אסור לקרוא ב-main context — המסמך עלול           │
-│    להיות גדול (מאות KB) ולהרוס את ה-context          │
+│  • This is the "source of truth" for requirements   │
+│  • Never modify — it's what the user provided       │
+│  • Never read in main context — the document could  │
+│    be large (hundreds of KB) and destroy the context│
 │                                                      │
-│  📝 OUTPUT = קבצי epics/ בלבד!                      │
+│  📝 OUTPUT = epics/ files only!                     │
 │  • .claude/memory/epics/XX-name.md                   │
-│  • נכתב רק אחרי אישור Diff                         │
+│  • Written only after Diff approval                 │
 │                                                      │
 └──────────────────────────────────────────────────────┘
 ```
 
-**הזרימה:**
+**The Flow:**
 ```
-DOC_SOURCE ──[קריאה דרך סאב-אייגנט בלבד!]──► סאב-אייגנט קורא את הדרישות
+DOC_SOURCE ──[Read via Sub-Agent ONLY!]──► Sub-Agent reads the requirements
                                                      │
                                                      ▼
-                                            מחזיר סיכום דרישות
+                                            Returns requirements summary
                                                      │
                                                      ▼
-                                      Claude שואל שאלות מפורטות
+                                      Claude asks detailed questions
                                                      │
                                                      ▼
-epics/XX.md ◄──[כתיבה אחרי אישור Diff]── כותב אפיון מפורט
+epics/XX.md ◄──[Write after Diff approval]── Writes detailed specification
 ```
 
-**3 אופציות בהתחלה (AskUserQuestionTool):**
-1. **"יש לי קישור"** → תדביק ונתחיל
-2. **"אין לי עדיין"** → לך ליצור מסמך ותחזור
-3. **"אפיון מאפס"** → נשאל שאלות מפורטות יותר בלי מסמך
+**3 Options at the start (AskUserQuestionTool):**
+1. **"I have a link"** → Paste it and we'll start
+2. **"I don't have one yet"** → Go create a document and come back
+3. **"Spec from scratch"** → We'll ask more detailed questions without a document
 
 ---
 
-## 📚 lessons.md = זיכרון לטווח ארוך
+## 📚 lessons.md = Long-term Memory
 
 ```
 ┌──────────────────────────────────────────────────────┐
 │  .claude/memory/lessons.md                           │
 ├──────────────────────────────────────────────────────┤
 │                                                      │
-│  ## שיעור 1: פורמט שאלות                            │
-│  • טעות: שאלתי בלי אופציות                          │
-│  • תיקון: תמיד AskUserQuestionTool                  │
-│    עם מספרים                                        │
+│  ## Lesson 1: Question Format                        │
+│  • Mistake: Asked without options                    │
+│  • Fix: Always use AskUserQuestionTool               │
+│    with numbers                                      │
 │                                                      │
-│  ## שיעור 2: Google Doc                             │
-│  • טעות: כתבתי ל-Doc לפני אישור                     │
-│  • תיקון: תמיד הצג Diff                             │
-│    וחכה לאישור                                      │
+│  ## Lesson 2: Google Doc                             │
+│  • Mistake: Wrote to Doc before approval             │
+│  • Fix: Always show Diff                             │
+│    and wait for approval                             │
 │                                                      │
-│  ## שיעור 3: ilay מעדיף...                          │
-│  • עברית בשיחה, אנגלית למונחים טכניים               │
-│  • טבלאות עם דוגמאות                                │
+│  ## Lesson 3: User prefers...                        │
+│  • Hebrew in conversation, English for tech terms   │
+│  • Tables with examples                              │
 │                                                      │
 └──────────────────────────────────────────────────────┘
 ```
 
-**איך זה עובד:**
-1. אתה מתקן אותי → אני מזהה שזה שיעור
-2. אני מוסיף ל-lessons.md
-3. בכל Session חדש → סאב-אייגנט קורא lessons.md
-4. לא חוזר על אותה טעות!
+**How it works:**
+1. You correct me → I identify it as a lesson
+2. I add it to lessons.md
+3. Every new Session → Sub-Agent reads lessons.md
+4. Don't repeat the same mistake!
 
-**הלולאה:**
+**The Loop:**
 ```
-טעות → זיהוי דפוס → כתיבת כלל → בדיקה → שיפור
-   ▲                                           │
-   └───────────────────────────────────────────┘
+Mistake → Pattern identification → Write rule → Check → Improve
+   ▲                                                      │
+   └──────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 💾 checkpoint.json = שמירה רציפה
+## 💾 checkpoint.json = Continuous Saving
 
-**הבעיה:** Claude Code עלול לעשות /compact בכל רגע, או ה-Session עלול להיסגר. בלי שמירה — הכל אבוד!
+**The Problem:** Claude Code may /compact at any moment, or the Session may close. Without saving — everything is lost!
 
-**הפתרון:** קובץ JSON קטן (~200 tokens) שנשמר אחרי כל תשובה משמעותית:
+**The Solution:** A small JSON file (~200 tokens) saved after every significant answer:
 
 ```
 ┌──────────────────────────────────────────────────────┐
@@ -221,34 +222,34 @@ epics/XX.md ◄──[כתיבה אחרי אישור Diff]── כותב אפי
 │                   "Q3: APIs", "Q4: Validations"],   │
 │    "pending": "Q5: Error Codes",                     │
 │    "doc_source": "https://docs.google.com/...",     │
-│    "notes": "המשתמש רוצה JWT, לא sessions"          │
+│    "notes": "User wants JWT, not sessions"          │
 │  }                                                   │
 │                                                      │
 └──────────────────────────────────────────────────────┘
 ```
 
-**מתי שומרים מה?**
+**When to save what?**
 
-| אירוע | checkpoint | epic file | prd-index |
-|--------|-----------|-----------|-----------|
-| תשובה משמעותית | ✅ | ✅ | ❌ |
-| סיום שלב Agent | ✅ | ✅ | ❌ |
-| Epic סגור 100% | ✅ | ✅ | ✅ |
-| 50% Context | ✅ + התראה | ✅ | ❌ |
+| Event | checkpoint | epic file | prd-index |
+|-------|-----------|-----------|-----------|
+| Significant answer | ✅ | ✅ | ❌ |
+| End of Agent phase | ✅ | ✅ | ❌ |
+| Epic 100% complete | ✅ | ✅ | ✅ |
+| 50% Context | ✅ + alert | ✅ | ❌ |
 | PreCompact | ✅ | — | — |
 
-**ב-50% Context:**
+**At 50% Context:**
 ```
-🛑 עצור! → 💾 שמור הכל → 🔄 הצע /compact או Session חדש
+🛑 Stop! → 💾 Save everything → 🔄 Suggest /compact or new Session
 ```
 
 ---
 
-## 📊 prd-index.json = מפת ה-PRD הקיים
+## 📊 prd-index.json = Map of the Existing PRD
 
-**הבעיה:** כל Agent צריך להכיר את כל ה-PRD שכבר נכתב כדי לשאול שאלות חכמות ולזהות קישורים — אבל בלי לשרוף את כל ה-Context!
+**The Problem:** Every Agent needs to know all the PRD that was already written to ask smart questions and identify links — but without burning all the Context!
 
-**הפתרון:** קובץ JSON קומפקטי (~500 tokens) שמכיל את "המפה" של כל מה שקיים:
+**The Solution:** A compact JSON file (~500 tokens) containing the "map" of everything that exists:
 
 ```
 ┌──────────────────────────────────────────────────────┐
@@ -278,39 +279,41 @@ epics/XX.md ◄──[כתיבה אחרי אישור Diff]── כותב אפי
 └──────────────────────────────────────────────────────┘
 ```
 
-**איך Agent משתמש בזה:**
+**How an Agent uses this:**
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│  🎯 Session מתחיל                                       │
+│  🎯 Session starts                                      │
 ├─────────────────────────────────────────────────────────┤
 │                                                         │
-│  1. קורא prd-index.json                                │
-│     "יש 2 epics: user-auth, product-catalog"           │
+│  1. Reads prd-index.json                               │
+│     "There are 2 epics: user-auth, product-catalog"    │
 │                                                         │
-│  2. משתמש: "בוא נאפיין מערכת הזמנות"                   │
+│  2. User: "Let's spec an order system"                 │
 │                                                         │
-│  3. Architect שואל שאלה חכמה:                           │
-│     "ראיתי שיש לנו Entity של Product ו-User.           │
-│      האם הזמנה מקושרת למשתמש ולמוצרים ספציפיים?"       │
+│  3. Architect asks a smart question:                    │
+│     "I see we have a Product and User Entity.          │
+│      Is the order linked to a user and specific        │
+│      products?"                                         │
 │                                                         │
-│  4. זיהוי קישורים אוטומטי:                              │
-│     "⚠️ ה-epic הזה ישפיע על: user-auth, product-catalog"│
+│  4. Automatic link detection:                           │
+│     "⚠️ This epic will affect: user-auth,              │
+│      product-catalog"                                   │
 │                                                         │
 └─────────────────────────────────────────────────────────┘
 ```
 
-**היתרונות:**
-- ~500 tokens במקום לקרוא את כל ה-PRD (אלפי tokens)
-- כל Agent מכיר את ה"מפה" של המערכת
-- שאלות חכמות מבוססות על מה שקיים
-- זיהוי קישורים אוטומטי בין epics
+**The Benefits:**
+- ~500 tokens instead of reading the entire PRD (thousands of tokens)
+- Every Agent knows the system "map"
+- Smart questions based on what exists
+- Automatic link detection between epics
 
 ---
 
-## 🔍 Cross-Review = בקרת איכות (7 בדיקות)
+## 🔍 Cross-Review = Quality Control (7 Checks)
 
-**לפני שכותבים לקובץ epic**, עוברות 7 בדיקות חובה:
+**Before writing to an epic file**, 7 mandatory checks are performed:
 
 ```
 ┌──────────────────────────────────────────────────────┐
@@ -318,79 +321,80 @@ epics/XX.md ◄──[כתיבה אחרי אישור Diff]── כותב אפי
 ├──────────────────────────────────────────────────────┤
 │                                                      │
 │  1. ✅ PM Review                                     │
-│     כל User Story מכוסה באפיון?                      │
+│     Is every User Story covered in the spec?        │
 │                                                      │
 │  2. ✅ Architect Review                              │
-│     עקביות טכנית — Entities מתאימים ל-APIs?          │
+│     Technical consistency — do Entities match APIs? │
 │                                                      │
 │  3. ✅ Frontend Review                               │
-│     כל endpoint מופיע ב-UI? כל state מטופל?         │
+│     Every endpoint appears in UI? Every state       │
+│     handled?                                         │
 │                                                      │
-│  4. ✅ Analytics Events (מינימום 12!)                │
-│     כל פעולה משמעותית מתועדת — page view,           │
+│  4. ✅ Analytics Events (minimum 12!)               │
+│     Every significant action documented — page view,│
 │     form submit, click, error                        │
 │                                                      │
 │  5. ✅ SEO Metadata                                  │
-│     כל עמוד public — title, description, og:tags    │
+│     Every public page — title, description, og:tags │
 │                                                      │
 │  6. ✅ i18n Consistency                              │
-│     כל הודעה בעברית ובאנגלית                        │
+│     Every message in both languages                 │
 │                                                      │
 │  7. ✅ Deferred Documentation                        │
-│     מה נדחה לעתיד — מתועד ומנומק                    │
+│     What was deferred — documented with reason      │
 │                                                      │
 ├──────────────────────────────────────────────────────┤
-│  📊 סיכום: X פערים נמצאו / Y נסגרו / Z נדחו        │
+│  📊 Summary: X gaps found / Y closed / Z deferred   │
 │                                                      │
-│  ⚠️ יש סתירות? → AskUserQuestionTool → תיקון        │
-│  ✅ הכל חלק? → Diff → אישור → כתיבה לקובץ          │
+│  ⚠️ Contradictions? → AskUserQuestionTool → Fix    │
+│  ✅ All good? → Diff → Approval → Write to file    │
 │                                                      │
 └──────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 🏗️ מבנה הקבצים
+## 🏗️ File Structure
 
 ```
 .claude/
-├── CLAUDE.md                    ← 🧠 ה"מוח" — 18 כללי ברזל
+├── CLAUDE.md                    ← 🧠 The "brain" — 18 Iron Rules
 ├── settings.json                ← 3 Hooks (SessionStart, PreCompact, Stop)
-├── settings.local.json          ← הרשאות WebFetch
+├── settings.local.json          ← WebFetch permissions
 │
 ├── scripts/
-│   └── statusline.sh            ← אחוז Context בצבעים ב-CLI
+│   └── statusline.sh            ← Context percentage in colors in CLI
 │
-├── memory/                      ← 💾 זיכרון מתמשך
-│   ├── checkpoint.json          ← ~200 tokens — איפה עצרנו
-│   ├── prd-index.json           ← ~500 tokens — מפת ה-PRD
-│   ├── lessons.md               ← שיעורים שנלמדו
-│   ├── session-init.json        ← verification מסאב-אייגנט
-│   └── epics/                   ← 📄 אפיונים מוכנים לפיתוח
+├── memory/                      ← 💾 Persistent memory
+│   ├── checkpoint.json          ← ~200 tokens — where we stopped
+│   ├── prd-index.json           ← ~500 tokens — PRD map
+│   ├── lessons.md               ← Lessons learned
+│   ├── session-init.json        ← Sub-agent verification
+│   └── epics/                   ← 📄 Dev-ready specifications
 │       ├── 01-user-auth.md
 │       └── 02-product-catalog.md
 │
-└── skills/prd-engine/           ← ⚙️ מנוע ה-Skill
+└── skills/prd-engine/           ← ⚙️ Skill Engine
     ├── SKILL.md                 ← Main Orchestrator
     ├── config/
-    │   └── workflow.json        ← הגדרות workflow (v2.1.0)
+    │   └── workflow.json        ← Workflow settings (v2.1.0)
     ├── agents/
     │   ├── product-manager/
-    │   │   └── SKILL.md         ← 9 שאלות עסקיות
+    │   │   └── SKILL.md         ← 9 business questions
     │   ├── architect/
-    │   │   └── SKILL.md         ← 8 שאלות טכניות
+    │   │   └── SKILL.md         ← 8 technical questions
     │   └── frontend/
-    │       └── SKILL.md         ← 11+1 שאלות UI/UX
+    │       └── SKILL.md         ← 11+1 UI/UX questions
     ├── rules/
     │   ├── INDEX.md
     │   ├── 01-questions-format.md
     │   ├── 02-review-crosscheck.md
     │   └── 03-reflection.md
     ├── templates/
-    │   ├── epic-template.md     ← תבנית Epic (Parts A-D)
+    │   ├── epic-template.md     ← Epic template (Parts A-D)
     │   ├── checkpoint.json
     │   ├── prd-index.json
-    │   ├── landing-page-guide.md  ← מדריך Landing Page (10 sections)
+    │   ├── landing-page-guide.md  ← Landing Page guide (10 sections)
     │   └── landing-page-anatomy.jpg
     └── hooks/
         ├── startup.sh           ← SessionStart
@@ -400,9 +404,9 @@ epics/XX.md ◄──[כתיבה אחרי אישור Diff]── כותב אפי
 
 ---
 
-## ⚡ Hooks = אוטומציה
+## ⚡ Hooks = Automation
 
-3 Hooks שרצים אוטומטית — בלי שהמשתמש צריך לעשות משהו:
+3 Hooks that run automatically — without the user needing to do anything:
 
 ```
 ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
@@ -411,81 +415,83 @@ epics/XX.md ◄──[כתיבה אחרי אישור Diff]── כותב אפי
 │ startup.sh  │    │pre-compact  │    │auto-        │
 │             │    │   .sh       │    │checkpoint.sh│
 │             │    │             │    │             │
-│ מה עושה:   │    │ מה עושה:   │    │ מה עושה:   │
-│ מדפיס      │    │ שומר       │    │ שומר       │
+│ What it     │    │ What it     │    │ What it     │
+│ does:       │    │ does:       │    │ does:       │
+│ Prints      │    │ Saves       │    │ Saves       │
 │ "PRD-Engine │    │ checkpoint  │    │ checkpoint  │
-│ v2.1.0      │    │ עם timestamp│    │ + reflection│
-│ מוכן!"     │    │ לפני compact│    │ + lessons   │
+│ v2.1.0      │    │ with        │    │ + reflection│
+│ Ready!"     │    │ timestamp   │    │ + lessons   │
 └─────────────┘    └─────────────┘    └─────────────┘
      │                   │                   │
      ▼                   ▼                   ▼
   Session             /compact             Session
-  מתחיל               קורה                 נגמר
+  starts              happens              ends
 ```
 
-**למה Hooks חשובים?**
-- **SessionStart:** מודיע שה-engine פעיל
-- **PreCompact:** שומר מצב לפני ש-compact מוחק את ההיסטוריה
-- **Stop:** שומר כל מה שנותר + רושם reflection לשיפור עתידי
+**Why are Hooks important?**
+- **SessionStart:** Announces that the engine is active
+- **PreCompact:** Saves state before compact deletes history
+- **Stop:** Saves everything remaining + writes reflection for future improvement
 
 ---
 
-## 🔒 18 כללי ברזל — סקירה מהירה
+## 🔒 18 Iron Rules — Quick Overview
 
-| # | כלל | בקצרה |
-|---|------|--------|
-| 0 | סאב-אייגנטים | Sonnet בלבד + DOC_SOURCE רק דרך סאב-אייגנט |
-| 1 | שאלות מובנות | AskUserQuestionTool + אופציות + 🎯 השלכות |
-| 2 | מודולריות | 500 שורות מקסימום, כל Agent בתחומו |
-| 3 | שמירה רציפה | checkpoint אחרי כל תשובה + מטריצת שמירה |
-| 4 | אפס קצוות פתוחים | כל פרט מוגדר, כל error message כתוב |
-| 5 | Plan Mode | חובה לפני משימה משמעותית |
-| 6 | Cross-Review | 7 בדיקות חובה לפני כתיבה לקובץ |
-| 7 | Sweet Spot | 🟢 MVP / 🔵 עתיד / ❓ משתמש מחליט |
-| 8 | Epics = Dev-Ready | כל קובץ epic = מוכן לפיתוח |
-| 9 | Diff לפני כתיבה | הצג שינויים + אישור מפורש |
-| 10 | גמישות הוליסטית | שאלות SKILL = נקודת פתיחה, Agent מעמיק |
-| 11 | לולאת שיפור | lessons.md — לומד מטעויות |
-| 12 | קריאת DOC_SOURCE | בכל Session דרך סאב-אייגנט |
-| 13 | טעינת PRD Context | prd-index.json לשאלות חכמות |
-| 14 | החלפת כובעים | 🎩 הודעה + קריאת SKILL.md |
-| 15 | Analytics | מינימום 12 events לכל epic |
-| 16 | Design System | colors + typography + spacing חובה |
-| 17 | Reflection | בסוף כל session — עדכון lessons.md |
+| # | Rule | Summary |
+|---|------|---------|
+| 0 | Sub-Agents | Sonnet only + DOC_SOURCE only via sub-agent |
+| 1 | Structured Questions | AskUserQuestionTool + options + 🎯 implications |
+| 2 | Modularity | 500 lines maximum, each Agent in their domain |
+| 3 | Continuous Saving | checkpoint after every answer + saving matrix |
+| 4 | Zero Open Ends | Every detail defined, every error message written |
+| 5 | Plan Mode | Required before significant tasks |
+| 6 | Cross-Review | 7 mandatory checks before writing to file |
+| 7 | Sweet Spot | 🟢 MVP / 🔵 Future / ❓ User Decides |
+| 8 | Epics = Dev-Ready | Every epic file = ready for development |
+| 9 | Diff Before Write | Show changes + explicit approval |
+| 10 | Holistic Flexibility | SKILL questions = starting point, Agent goes deeper |
+| 11 | Improvement Loop | lessons.md — learns from mistakes |
+| 12 | Read DOC_SOURCE | Every Session via sub-agent |
+| 13 | Load PRD Context | prd-index.json for smart questions |
+| 14 | Hat Switching | 🎩 announcement + read SKILL.md |
+| 15 | Analytics | Minimum 12 events per epic |
+| 16 | Design System | colors + typography + spacing required |
+| 17 | Reflection | At end of every session — update lessons.md |
 
 ---
 
-## 🎯 Sweet Spot = MVP vs עתיד
+## 🎯 Sweet Spot = MVP vs Future
 
-**ב-Architect, כל שאלה טכנית מופרדת ל-3 רמות:**
+**In Architect, every technical question is separated into 3 levels:**
 
 ```
 ┌──────────────────────────────────────────────────────┐
 │                                                      │
-│  🟢 חובה ל-MVP                                     │
-│  בלי זה ה-epic לא עובד                              │
-│  דוגמה: "Entity של User עם email + password"        │
+│  🟢 Required for MVP                                │
+│  Without this the epic doesn't work                 │
+│  Example: "User Entity with email + password"       │
 │                                                      │
 ├──────────────────────────────────────────────────────┤
 │                                                      │
-│  🔵 המלצה לעתיד                                    │
-│  יחסוך refactor בהמשך                               │
-│  דוגמה: "הוסף שדה role_history לתעד שינויי הרשאות" │
+│  🔵 Recommended for Future                          │
+│  Will save refactoring later                        │
+│  Example: "Add role_history field to document       │
+│   permission changes"                                │
 │                                                      │
 ├──────────────────────────────────────────────────────┤
 │                                                      │
-│  ❓ המשתמש מחליט                                    │
-│  יש 2 דרכים — תבחר                                  │
-│  דוגמה: "JWT או Session-based? שניהם עובדים"       │
+│  ❓ User Decides                                    │
+│  There are 2 ways — you choose                      │
+│  Example: "JWT or Session-based? Both work"         │
 │                                                      │
 └──────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 📦 Epic = מוצר מוגמר
+## 📦 Epic = Finished Product
 
-כל קובץ ב-`epics/` הוא מסמך אפיון עצמאי עם 4 חלקים + סיכום:
+Every file in `epics/` is a standalone specification document with 4 parts + summary:
 
 ```
 ┌──────────────────────────────────────────────────────┐
@@ -494,7 +500,7 @@ epics/XX.md ◄──[כתיבה אחרי אישור Diff]── כותב אפי
 │                                                      │
 │  Part A — Business Requirements (PM)                 │
 │  ├─ User Stories (2-4)                               │
-│  ├─ Acceptance Criteria (8-12, מקוטלגים)             │
+│  ├─ Acceptance Criteria (8-12, categorized)          │
 │  ├─ User Roles Table                                 │
 │  ├─ Edge Cases / Funnel                              │
 │  ├─ KPIs Tables                                      │
@@ -502,13 +508,13 @@ epics/XX.md ◄──[כתיבה אחרי אישור Diff]── כותב אפי
 │  └─ Key Decisions                                    │
 │                                                      │
 │  Part B — Technical Architecture (Architect)         │
-│  ├─ Entities (שדות, indexes, rules, edge cases)     │
-│  ├─ Relations (עם FK behavior)                       │
+│  ├─ Entities (fields, indexes, rules, edge cases)   │
+│  ├─ Relations (with FK behavior)                     │
 │  ├─ API Endpoints (Auth + Rate Limit)                │
 │  ├─ Validations (HE + EN)                            │
-│  ├─ Error Codes (7 קטגוריות)                         │
+│  ├─ Error Codes (7 categories)                       │
 │  ├─ Logging & Monitoring                             │
-│  ├─ Dependencies (3 קטגוריות)                        │
+│  ├─ Dependencies (3 categories)                      │
 │  ├─ 2030 Recommendations                             │
 │  └─ Key Decisions                                    │
 │                                                      │
@@ -522,160 +528,162 @@ epics/XX.md ◄──[כתיבה אחרי אישור Diff]── כותב אפי
 │  ├─ 2030 Recommendations                             │
 │  └─ Key Decisions                                    │
 │                                                      │
-│  Part D — Cross-Review (7 בדיקות)                   │
+│  Part D — Cross-Review (7 checks)                   │
 │  ├─ Analytics Events (12+)                           │
 │  ├─ SEO Metadata                                     │
 │  ├─ i18n Consistency                                 │
 │  └─ Review Summary                                   │
 │                                                      │
-│  Key Decisions (All Agents) — טבלה מאוחדת           │
+│  Key Decisions (All Agents) — Unified Table          │
 │                                                      │
 └──────────────────────────────────────────────────────┘
 ```
 
-**היתרון:** המשתמש לוקח את הקובץ → מעביר ל-Cursor / Claude Code / Copilot / Windsurf / Bolt → המפתח מתחיל לפתח ישירות, בלי שאלות נוספות.
+**The Benefit:** User takes the file → transfers to Cursor / Claude Code / Copilot / Windsurf / Bolt → Developer starts developing directly, without additional questions.
 
 ---
 
-## 🔄 Workflow מלא — תרחיש מקצה לקצה
+## 🔄 Full Workflow — End-to-End Scenario
 
 ```
-מתחיל Session
+Session starts
     │
     ▼
 ┌──────────────────────────────────────────┐
-│  קורא CLAUDE.md (כללי ברזל)             │
-│  קורא checkpoint.json (אם יש)           │
-│  סאב-אייגנט קורא: SKILL.md + rules/     │
+│  Reads CLAUDE.md (Iron Rules)            │
+│  Reads checkpoint.json (if exists)       │
+│  Sub-Agent reads: SKILL.md + rules/      │
 │  + lessons.md + prd-index.json + epics/  │
-│  + DOC_SOURCE (אם יש) via WebFetch      │
+│  + DOC_SOURCE (if exists) via WebFetch   │
 └────────────────────┬─────────────────────┘
                      │
                      ▼
-     📊 "יש 2 epics קיימים, ממשיכים?"
+     📊 "Found 2 existing epics, continue?"
                      │
                      ▼
-   (מקור + יעד) AskUserQuestionTool שלב 0
+   Step 0 AskUserQuestionTool (source + target)
                      │
                      ▼
 ┌──────────────────────────────────────────┐
-│  שלב PM: שאלות עסקיות                    │
-│  (קורא product-manager/SKILL.md)        │
+│  PM Stage: Business questions            │
+│  (reads product-manager/SKILL.md)        │
 │                                          │
-│  9 שאלות:                                │
-│  Q1: מי המשתמש?                          │
-│  Q2: איזו בעיה זה פותר?                  │
+│  9 questions:                            │
+│  Q1: Who is the user?                    │
+│  Q2: What problem does it solve?         │
 │  Q3: User Stories                        │
 │  Q4: Acceptance Criteria                 │
-│  Q5: עדיפות                              │
+│  Q5: Priority                            │
 │  Q6: Cancel/Error + Funnel               │
 │  Q7: User Roles Table                    │
 │  Q8: KPIs                                │
-│  Q9: 2030 Recommendations               │
+│  Q9: 2030 Recommendations                │
 │                                          │
-│  צריך לחקור משהו?                        │
+│  Need to research something?             │
 │    → Task Tool = Sub-Agent               │
-│    → מחזיר תוצאות                        │
-│    → ממשיך לשאול                         │
+│    → Returns results                     │
+│    → Continues asking                    │
 └────────────────────┬─────────────────────┘
                      │
                      ▼
-     🎩 "עוברים ל-Architect!"
+     🎩 "Switching to Architect!"
                      │
                      ▼
 ┌──────────────────────────────────────────┐
-│  שלב Architect: שאלות טכניות            │
-│  (קורא architect/SKILL.md)              │
+│  Architect Stage: Technical questions    │
+│  (reads architect/SKILL.md)              │
 │                                          │
-│  ◻ "יש כבר Entity של User ב-prd-index, │
-│     נקשר אליו או ניצור חדש?"           │
+│  ◻ "There's already a User Entity in    │
+│     prd-index, link to it or create new?"│
 │                                          │
-│  8 שאלות: Entities, Relations, APIs,    │
-│  Validations, Error Codes,              │
-│  Logging, Dependencies, 2030 Recs       │
+│  8 questions: Entities, Relations, APIs, │
+│  Validations, Error Codes,               │
+│  Logging, Dependencies, 2030 Recs        │
 │                                          │
-│  Sweet Spot: 🟢 MVP / 🔵 עתיד / ❓      │
+│  Sweet Spot: 🟢 MVP / 🔵 Future / ❓     │
 └────────────────────┬─────────────────────┘
                      │
                      ▼
-     🎩 "עוברים ל-Frontend!"
+     🎩 "Switching to Frontend!"
                      │
                      ▼
 ┌──────────────────────────────────────────┐
-│  שלב Frontend: שאלות UI                  │
-│  (קורא frontend/SKILL.md)               │
+│  Frontend Stage: UI questions            │
+│  (reads frontend/SKILL.md)               │
 │                                          │
-│  Q0: יש תמונת reference?                │
-│  Q1-Q11: Layout, Errors, Loading,       │
-│  Responsive, A11y, i18n, Design System  │
+│  Q0: Do you have a reference image?      │
+│  Q1-Q11: Layout, Errors, Loading,        │
+│  Responsive, A11y, i18n, Design System   │
 └────────────────────┬─────────────────────┘
                      │
                      ▼
 ┌──────────────────────────────────────────┐
-│  🔍 Cross-Review — 7 בדיקות             │
-│  סתירות? → AskUserQuestionTool → תיקון  │
-│  ✅ הכל חלק? → המשך                     │
+│  🔍 Cross-Review — 7 checks              │
+│  Contradictions? → AskUserQuestionTool   │
+│  → Fix                                   │
+│  ✅ All good? → Continue                 │
 └────────────────────┬─────────────────────┘
                      │
                      ▼
-     Diff → אישור → כתיבה ל-epics/XX.md
+     Diff → Approval → Write to epics/XX.md
                      │
                      ▼
 ┌──────────────────────────────────────────┐
-│  עדכון checkpoint.json                   │
-│  עדכון prd-index.json (epic חדש!)       │
-│  ✅ "Epic מוכן לפיתוח!"                 │
+│  Update checkpoint.json                  │
+│  Update prd-index.json (new epic!)       │
+│  ✅ "Epic ready for development!"        │
 └────────────────────┬─────────────────────┘
                      │
                      ▼
-     50% Context? → שמור → Session חדש
+     50% Context? → Save → New Session
 ```
 
 ---
 
-## 🧠 גמישות הוליסטית = שאלות חכמות
+## 🧠 Holistic Flexibility = Smart Questions
 
-**השאלות ב-SKILL.md הן נקודת פתיחה, לא רשימה סגורה!**
+**The questions in SKILL.md are a starting point, not a closed list!**
 
 ```
 ┌──────────────────────────────────────────────────────┐
 │                                                      │
-│  📋 SKILL.md = מינימום חובה + כיוון                  │
-│  🧠 ה-Agent = מעמיק לפי הצורך                       │
+│  📋 SKILL.md = Required minimum + direction          │
+│  🧠 The Agent = Goes deeper as needed               │
 │                                                      │
-│  דוגמה:                                              │
+│  Example:                                            │
 │                                                      │
-│  PM שואל (מ-SKILL.md): "מי המשתמש?"                 │
-│  משתמש עונה: "מנהל חנות"                             │
+│  PM asks (from SKILL.md): "Who is the user?"        │
+│  User answers: "Store manager"                       │
 │                                                      │
-│  PM ממשיך (מהאינטליגנציה שלו):                       │
+│  PM continues (from its intelligence):               │
 │  ┌─                                                  │
-│  │ "האם מנהל חנות יכול לנהל יותר מחנות אחת?"       │
-│  │ "האם יש הבדל בין מנהל פנימי לחיצוני?"           │
-│  │ "האם מנהל חנות רואה את כל העובדים?"              │
+│  │ "Can a store manager manage more than one store?"│
+│  │ "Is there a difference between internal and      │
+│  │  external manager?"                               │
+│  │ "Does a store manager see all employees?"        │
 │  └─                                                  │
 │                                                      │
-│  ✅ שאל חובה מ-SKILL.md                              │
-│  ✅ הוסף שאלות לפי הצורך                             │
-│  ✅ העמק כשיש עמימות                                 │
-│  ❌ אל תתעלם משאלות חובה                             │
-│  ❌ אל תשאל שאלות לא רלוונטיות                      │
+│  ✅ Ask required questions from SKILL.md             │
+│  ✅ Add questions as needed                          │
+│  ✅ Go deeper when there's ambiguity                │
+│  ❌ Don't ignore required questions                  │
+│  ❌ Don't ask irrelevant questions                   │
 │                                                      │
 └──────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 4️⃣ אפס קצוות פתוחים
+## 4️⃣ Zero Open Ends
 
-**כל פרט חייב להיות מוגדר — לא "יהיה משהו":**
+**Every detail must be defined — not "there will be something":**
 
-| ❌ לא מספיק | ✅ מספיק |
-|------------|---------|
-| "יוצג הודעת שגיאה" | "יוצג: 'אירעה שגיאה בשמירה. אנא נסה שוב.'" |
-| "הכפתור יעשה submit" | "לחיצה: 1) spinner, 2) POST /api/x, 3) toast ירוק / הודעה אדומה" |
-| "יהיה validation" | "שם — חובה, מינ׳ 2 תווים. אימייל — פורמט. טלפון — 10 ספרות." |
-| "המשתמש יוכל למחוק" | "popup 'האם למחוק?' → כפתור אדום → toast 'נמחק בהצלחה'" |
+| ❌ Not enough | ✅ Sufficient |
+|---------------|---------------|
+| "An error message will be shown" | "Display: 'An error occurred while saving. Please try again.'" |
+| "The button will submit" | "Click: 1) spinner, 2) POST /api/x, 3) green toast / red message" |
+| "There will be validation" | "Name — required, min 2 chars. Email — format. Phone — 10 digits." |
+| "The user can delete" | "popup 'Delete this?' → red button → toast 'Deleted successfully'" |
 
 ---
 

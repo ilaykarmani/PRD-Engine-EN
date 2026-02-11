@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # PRD-Engine - Startup Hook
-# טריגר: SessionStart (startup, compact, resume, clear)
-# מטרה: הצגת סטטוס + הנחיות אתחול
+# Trigger: SessionStart (startup, compact, resume, clear)
+# Purpose: Display status + initialization instructions
 
 MEMORY_DIR=".claude/memory"
 CHECKPOINT_FILE="$MEMORY_DIR/checkpoint.json"
@@ -12,7 +12,7 @@ EPICS_DIR="$MEMORY_DIR/epics"
 
 echo ""
 echo "🚀 ════════════════════════════════════════════════════════════"
-echo "   PRD-Engine — אתחול Session"
+echo "   PRD-Engine — Session Initialization"
 echo "════════════════════════════════════════════════════════════"
 echo ""
 
@@ -25,19 +25,30 @@ if [ -f "$CHECKPOINT_FILE" ] && command -v jq &> /dev/null; then
     DOC_URL=$(jq -r '.doc_url // ""' "$CHECKPOINT_FILE")
     LAST_SAVED=$(jq -r '.last_saved // ""' "$CHECKPOINT_FILE")
 
-    echo "📍 CHECKPOINT נמצא! ($LAST_SAVED)"
+    echo "📍 CHECKPOINT found! ($LAST_SAVED)"
     echo "   ┌────────────────────────────────────────"
-    echo "   │ מוצר:     $PRODUCT"
+    echo "   │ Product:  $PRODUCT"
     echo "   │ Epic:     $EPIC"
-    echo "   │ סוכן:     $AGENT"
-    echo "   │ שאלה:     $QUESTION"
+    echo "   │ Agent:    $AGENT"
+    echo "   │ Question: $QUESTION"
     if [ -n "$DOC_URL" ] && [ "$DOC_URL" != "" ] && [ "$DOC_URL" != "null" ]; then
         echo "   │ DOC:      $DOC_URL"
+    fi
+
+    # Check for local doc-source.txt
+    DOC_LOCAL=$(jq -r '.doc_local_path // ""' "$CHECKPOINT_FILE")
+    if [ -n "$DOC_LOCAL" ] && [ "$DOC_LOCAL" != "" ] && [ "$DOC_LOCAL" != "null" ]; then
+        if [ -f "$DOC_LOCAL" ]; then
+            DOC_SIZE=$(wc -l < "$DOC_LOCAL" | tr -d ' ')
+            echo "   │ LOCAL:    $DOC_LOCAL ($DOC_SIZE lines)"
+        else
+            echo "   │ LOCAL:    ⚠️  $DOC_LOCAL (file not found!)"
+        fi
     fi
     echo "   └────────────────────────────────────────"
     echo ""
 else
-    echo "ℹ️  אין checkpoint — הרץ setup.sh קודם"
+    echo "ℹ️  No checkpoint — run setup.sh first"
     echo ""
 fi
 
@@ -47,7 +58,7 @@ if [ -d "$EPICS_DIR" ]; then
     if [ "$EPIC_COUNT" -gt 0 ]; then
         LATEST_EPIC=$(ls -t "$EPICS_DIR"/*.md 2>/dev/null | head -1)
         BASENAME=$(basename "$LATEST_EPIC")
-        echo "📄 $EPIC_COUNT קבצי epic | אחרון: $BASENAME"
+        echo "📄 $EPIC_COUNT epic files | latest: $BASENAME"
     fi
 fi
 
@@ -55,13 +66,13 @@ fi
 if [ -f "$PRD_INDEX_FILE" ] && command -v jq &> /dev/null; then
     COMPLETED=$(jq -r '.features_completed // 0' "$PRD_INDEX_FILE")
     ENTITIES=$(jq -r '.global_entities | length' "$PRD_INDEX_FILE" 2>/dev/null || echo "0")
-    echo "📊 PRD: $COMPLETED epics הושלמו | $ENTITIES entities גלובליים"
+    echo "📊 PRD: $COMPLETED epics completed | $ENTITIES global entities"
 fi
 
 # ─── 4. Lessons ───
 if [ -f "$LESSONS_FILE" ]; then
-    LESSON_COUNT=$(grep -c "^## תאריך:" "$LESSONS_FILE" 2>/dev/null || echo "0")
-    echo "📚 שיעורים: $LESSON_COUNT"
+    LESSON_COUNT=$(grep -c "^## Date:" "$LESSONS_FILE" 2>/dev/null || echo "0")
+    echo "📚 Lessons: $LESSON_COUNT"
 fi
 
 echo ""

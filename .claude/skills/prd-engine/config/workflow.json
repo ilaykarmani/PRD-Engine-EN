@@ -37,7 +37,7 @@
       "6: Cross-Review 7 checks",
       "7: Sweet Spot (MVP/future/user decides)",
       "8: Epics = dev-ready output",
-
+      "9: Diff before write",
       "10: holistic flexibility — SKILL questions = starting point",
       "11: self-improvement loop (lessons.md)",
       "12: DOC_SOURCE read every session",
@@ -49,34 +49,50 @@
     ]
   },
   "step_zero": {
-    "description": "קבלת קישור למסמך מקור",
+    "description": "Get source document link",
     "tool": "AskUserQuestionTool",
-    "options": ["יש קישור", "אין עדיין", "אפיון מאפס"],
-    "doc_source_rules": "READ-ONLY, read via sub-agent only, never in main context"
+    "options": ["I have a link", "Not yet", "Spec from scratch"],
+    "doc_source_rules": "READ-ONLY, download to local TXT, read from local file in subsequent sessions",
+    "local_txt_optimization": {
+      "enabled": true,
+      "local_path": ".claude/memory/doc-source.txt",
+      "flow": [
+        "1. User provides link → WebFetch document",
+        "2. Convert to clean TXT → save to doc-source.txt",
+        "3. Update checkpoint: doc_local_path",
+        "4. Epic Detection: sub-agent reads TXT, identifies potential epics",
+        "5. Display epic list immediately → 'Which epic should we start with?'"
+      ],
+      "benefits": [
+        "Faster: no WebFetch every session",
+        "Offline: works without internet",
+        "Better UX: immediate epic detection"
+      ]
+    }
   },
   "output": {
     "parts": ["A", "B", "C", "D"],
-    "part_a": "Business Requirements (PM) — 9 שאלות",
-    "part_b": "Technical Architecture (Architect) — 8 שאלות",
-    "part_c": "Frontend Specification (Frontend) — 11+prep שאלות",
-    "part_d": "Cross-Review — 7 בדיקות",
+    "part_a": "Business Requirements (PM) — 9 questions",
+    "part_b": "Technical Architecture (Architect) — 8 questions",
+    "part_c": "Frontend Specification (Frontend) — 11+prep questions",
+    "part_d": "Cross-Review — 7 checks",
     "additional": "Key Decisions (All Agents)"
   },
   "navigation": {
     "commands": {
-      "continue": "המשך לשאלה/agent הבא",
-      "back": "חזור לתקן תשובה קודמת",
-      "summary": "הצג סיכום ביניים",
-      "skip": "דלג ל-agent הבא (לא מומלץ)"
+      "continue": "Continue to next question/agent",
+      "back": "Go back to fix previous answer",
+      "summary": "Show interim summary",
+      "skip": "Skip to next agent (not recommended)"
     }
   },
   "saving": {
     "strategy": "key_points_only",
     "after_each_answer": false,
-    "note": "⛔ לא לשמור אחרי כל תשובה! רק בנקודות מפתח",
+    "note": "⛔ Do not save after every answer! Only at key points",
     "checkpoint_fields": ["epic", "agent", "question_number", "completed", "pending", "doc_source", "notes"],
     "saving_matrix": {
-      "single_answer": {"checkpoint": false, "epic_file": false, "prd_index": false, "note": "נשמר בזיכרון בלבד"},
+      "single_answer": {"checkpoint": false, "epic_file": false, "prd_index": false, "note": "Stored in memory only"},
       "agent_complete": {"checkpoint": true, "epic_file": true, "prd_index": false},
       "epic_100_percent": {"checkpoint": true, "epic_file": true, "prd_index": true},
       "compact_triggered": {"checkpoint": true, "epic_file": true, "prd_index": false},
@@ -97,27 +113,27 @@
     "never_use_for": ["simple user questions", "continuing conversation"],
     "user_announcements": {
       "required": true,
-      "before_template": "🔄 שולח סאב-אייג'נט ל{action}...",
-      "after_template": "✅ סאב-אייג'נט חזר: {summary}",
+      "before_template": "🔄 Sending sub-agent to {action}...",
+      "after_template": "✅ Sub-agent returned: {summary}",
       "examples": {
         "session_scan": {
-          "before": "שולח סאב-אייג'נט לסרוק את כל קבצי המערכת...",
-          "after": "נמצאו {epics} epics, {lessons} שיעורים, {entities} entities"
+          "before": "Sending sub-agent to scan all system files...",
+          "after": "Found {epics} epics, {lessons} lessons, {entities} entities"
         },
         "doc_source": {
-          "before": "שולח סאב-אייג'נט לקרוא את מסמך הדרישות...",
-          "after": "סיכום {lines} שורות, {stories} user stories זוהו"
+          "before": "Sending sub-agent to read requirements document...",
+          "after": "Summary {lines} lines, {stories} user stories identified"
         },
         "cross_review": {
-          "before": "שולח סאב-אייג'נט לבדוק עקביות בין הסוכנים...",
-          "after": "{gaps} פערים נמצאו, {resolved} נפתרו"
+          "before": "Sending sub-agent to check consistency between agents...",
+          "after": "{gaps} gaps found, {resolved} resolved"
         }
       }
     }
   },
   "quality": {
     "detail_level": "production",
-    "note": "כל Part חייב להיות ברמת פירוט מלאה — לא skeleton",
+    "note": "Every Part must be at full detail level — not a skeleton",
     "min_analytics_events": 12,
     "min_acceptance_criteria": 8,
     "max_file_lines": 500,

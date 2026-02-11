@@ -1,13 +1,14 @@
-# PRD-Engine Rules — תוכן עניינים
+# PRD-Engine Rules — Index
 
-## סדר טעינה
-הכללים נטענים בסדר הזה. כל כלל בונה על הקודם.
+## Loading Order
+The rules are loaded in this order. Each rule builds on the previous one.
 
-| # | קובץ | תיאור |
+| # | File | Description |
 |---|-------|--------|
-| 01 | questions-format.md | פורמט שאלות: אופציות ממוספרות + השלכות |
-| 02 | review-crosscheck.md | Review צולב: 3 agents מאשרים לפני כתיבה |
-| 03 | reflection.md | למידה מצטברת בסוף כל session |
+| 01 | questions-format.md | Question format: numbered options + implications |
+| 02 | review-crosscheck.md | Cross-Review: 3 agents approve before writing |
+| 03 | reflection.md | Cumulative learning at the end of each session |
+| 04 | local-doc-source.md | Local DOC_SOURCE: download to TXT + Epic Detection |
 
-## כלל על
-כל הכללים הם **חובה**. אין דילוג, אין קיצורים.
+## Master Rule
+All rules are **mandatory**. No skipping, no shortcuts.

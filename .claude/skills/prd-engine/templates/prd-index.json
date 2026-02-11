@@ -5,5 +5,5 @@
   "epics": [],
   "global_entities": [],
   "features_completed": 0,
-  "export_instruction": "כל epic עם dev_ready:true מוכן לפיתוח. העתק את הקובץ לכלי הפיתוח שלך."
+  "export_instruction": "Every epic with dev_ready:true is ready for development. Copy the file to your development tool."
 }

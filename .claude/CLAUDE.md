@@ -1,69 +1,69 @@
 # PRD-Engine — CLAUDE.md
 
-> זהו ה"מוח" של PRD-Engine. כל הכללים כאן הם **כללי ברזל** — אין דילוג, אין קיצורים.
-> המוצר: [PRODUCT_NAME] | שפה: [LANGUAGE] | מקור: [DOC_URL]
+> This is the "brain" of PRD-Engine. All rules here are **iron rules** — no skipping, no shortcuts.
+> Product: [PRODUCT_NAME] | Language: [LANGUAGE] | Source: [DOC_URL]
 
 ---
 
-## קבצים חשובים (Key Files)
+## Key Files
 
 ```
 ┌──────────────────────────────────────────────────────────┐
-│  📂 קבצים שחייבים להכיר:                                │
+│  📂 Files you must know:                                 │
 │                                                          │
-│  🧠 .claude/CLAUDE.md          ← אתה כאן! כללי ברזל     │
+│  🧠 .claude/CLAUDE.md          ← You are here! Iron rules│
 │  ⚙️ skills/prd-engine/SKILL.md ← Main Orchestrator       │
-│  💾 memory/checkpoint.json     ← איפה עצרנו (~200 tok)   │
-│  📊 memory/prd-index.json      ← מפת epics (~500 tok)    │
-│  📝 memory/lessons.md          ← שיעורים שנלמדו          │
-│  🔍 memory/session-init.json   ← verification סאב-אייגנט │
-│  📄 memory/epics/*.md          ← אפיונים מוכנים לפיתוח   │
+│  💾 memory/checkpoint.json     ← Where we stopped (~200 tok)│
+│  📊 memory/prd-index.json      ← Epic map (~500 tok)     │
+│  📝 memory/lessons.md          ← Lessons learned         │
+│  🔍 memory/session-init.json   ← Sub-agent verification  │
+│  📄 memory/epics/*.md          ← Dev-ready specifications│
 │                                                          │
-│  📐 rules/01-questions-format.md  ← פורמט שאלות          │
-│  📐 rules/02-review-crosscheck.md ← 7 בדיקות Cross-Review│
-│  📐 rules/03-reflection.md        ← פרוטוקול Reflection  │
+│  📐 rules/01-questions-format.md  ← Question format      │
+│  📐 rules/02-review-crosscheck.md ← 7 Cross-Review checks│
+│  📐 rules/03-reflection.md        ← Reflection protocol  │
 └──────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## פרוטוקול אתחול (Session Init)
+## Session Init Protocol
 
-בתחילת **כל** Session (כולל אחרי compact), בצע בדיוק 4 צעדים:
+At the start of **every** Session (including after compact), follow exactly 4 steps:
 
 ```
-Session מתחיל
+Session starts
      │
      ▼
- [צעד 1] קרא checkpoint.json (~200 tok)
+ [Step 1] Read checkpoint.json (~200 tok)
      │
      ▼
- [צעד 2] שלח סאב-אייג'נט (Explore/sonnet)
-     │    קורא: SKILL.md + rules/ + lessons + epics/ + DOC
-     │    כותב: session-init.json
+ [Step 2] Send sub-agent (Explore/sonnet)
+     │    Reads: SKILL.md + rules/ + lessons + epics/ + DOC
+     │    Writes: session-init.json
      ▼
- [צעד 3] הצג סטטוס למשתמש
+ [Step 3] Display status to user
      │
      ▼
- [צעד 4] שמירה רציפה פעילה מרגע זה!
+ [Step 4] Key-point saving active from this moment!
 ```
 
-### צעד 1: קרא checkpoint
+### Step 1: Read checkpoint
 ```
 Read .claude/memory/checkpoint.json
 ```
-קובץ קטן (~200 tokens). קרא ישירות בקונטקסט הראשי.
+Small file (~200 tokens). Read directly in main context.
 
-### צעד 2: שלח סאב-אייג'נט
+### Step 2: Send sub-agent
 ```
 Task Tool (subagent_type: "Explore", model: "sonnet"):
-  ├─ קרא: SKILL.md + rules/ + lessons.md + prd-index.json
-  ├─ קרא: כל קבצי epics/
-  ├─ אם יש doc_url → WebFetch לתפוס שינויים חיצוניים
-  └─ החזר: סיכום 60 שורות + כתוב session-init.json
+  ├─ Read: SKILL.md + rules/ + lessons.md + prd-index.json
+  ├─ Read: all epics/ files
+  ├─ If doc_url exists → WebFetch to catch external changes
+  └─ Return: 60-line summary + write session-init.json
 ```
 
-**מבנה session-init.json שהסאב-אייג'נט כותב:**
+**session-init.json structure written by sub-agent:**
 ```json
 {
   "timestamp": "2026-02-10T14:30:00",
@@ -72,65 +72,66 @@ Task Tool (subagent_type: "Explore", model: "sonnet"):
     "rules/02-review-crosscheck.md", "rules/03-reflection.md",
     "lessons.md", "prd-index.json", "epics/01-user-auth.md"
   ],
-  "feature_summary": "מערכת הזדהות עם JWT, 2 roles. Epic 1 הושלם (PM+Arch+FE). Epic 2 בתהליך — Architect Q5.",
-  "doc_source_status": "נקרא מחדש, אין שינויים מ-session קודם",
-  "warnings": ["lessons.md: המשתמש מעדיף עברית בשאלות"]
+  "feature_summary": "Auth system with JWT, 2 roles. Epic 1 complete (PM+Arch+FE). Epic 2 in progress — Architect Q5.",
+  "doc_source_status": "Re-read, no changes from previous session",
+  "warnings": ["lessons.md: User prefers Hebrew in questions"]
 }
 ```
 
-### צעד 3: הצג סטטוס
+### Step 3: Display status
 ```
-הצג למשתמש:
-  📦 מוצר: [שם]
-  📄 Epic נוכחי: [שם] (שאלה X מתוך Y)
-  📊 Epics שהושלמו: [N]
+Display to user:
+  📦 Product: [name]
+  📄 Current Epic: [name] (question X of Y)
+  📊 Completed Epics: [N]
 
-  [המשך מאיפה שעצרנו] / [התחל epic חדש]
+  [Continue where we left off] / [Start new epic]
 ```
 
-### צעד 4: שמירה בנקודות מפתח (לא אחרי כל תשובה!)
+### Step 4: Key-point saving (not after every answer!)
 ```
 ┌──────────────────────────────────────────────────────────┐
-│  ⛔ לא לשמור checkpoint אחרי כל תשובה — מפריע לזרימה!   │
+│  ⛔ Don't save checkpoint after every answer — disrupts  │
+│     flow!                                                │
 │                                                          │
-│  ✅ שמור רק בנקודות מפתח:                               │
-│  • סיום שלב Agent (PM → Architect → Frontend)           │
-│  • סיום Epic (אחרי Cross-Review ואישור)                 │
-│  • /compact או סיום Session                              │
-│  • 50% Context → 🛑 עצור + שמור + הצע compact           │
+│  ✅ Save only at key points:                             │
+│  • End of Agent phase (PM → Architect → Frontend)        │
+│  • End of Epic (after Cross-Review and approval)         │
+│  • /compact or Session end                               │
+│  • 50% Context → 🛑 Stop + save + suggest compact        │
 │                                                          │
-│  📝 תשובות בודדות נשמרות בזיכרון עד סיום שלב Agent!    │
+│  📝 Individual answers stored in memory until Agent ends!│
 └──────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## שלב 0: קבלת מסמך מקור (DOC_SOURCE)
+## Step 0: Getting Source Document (DOC_SOURCE)
 
-**לפני שמתחילים epic חדש** — שאל את המשתמש על מסמך המקור:
+**Before starting a new epic** — ask the user about the source document:
 
 ```yaml
 AskUserQuestionTool:
-  question: "האם יש לך מסמך דרישות (Google Doc, Notion, PDF) שממנו נעבוד?"
+  question: "Do you have a requirements document (Google Doc, Notion, PDF) to work from?"
   multiSelect: false
   options:
-    - label: "יש לי קישור"
-      description: "🎯 תדביק את הקישור ונתחיל לעבוד ממנו. הסאב-אייג'נט יקרא אותו."
-    - label: "אין לי עדיין"
-      description: "🎯 לך ליצור מסמך דרישות בסיסי ותחזור אלי עם קישור."
-    - label: "אפיון מאפס"
-      description: "🎯 נשאל שאלות מפורטות יותר — בלי מסמך בסיס."
+    - label: "I have a link"
+      description: "🎯 Paste the link and we'll start working from it. Sub-agent will read it."
+    - label: "I don't have one yet"
+      description: "🎯 Go create a basic requirements document and come back with a link."
+    - label: "Spec from scratch"
+      description: "🎯 We'll ask more detailed questions — no base document."
 ```
 
-**זרימת DOC_SOURCE:**
+**DOC_SOURCE flow:**
 ```
 ┌──────────────────────────────────────────────────────────┐
 │                                                          │
-│  📄 DOC_SOURCE = קריאה בלבד (READ-ONLY!)                │
+│  📄 DOC_SOURCE = READ-ONLY!                              │
 │                                                          │
-│  • זה ה"מקור האמת" של הדרישות                           │
-│  • אסור לשנות — כי זה מה שהמשתמש הביא                  │
-│  • אסור לקרוא ב-main context — עלול להרוס context!      │
+│  • This is the "source of truth" for requirements        │
+│  • Do not modify — it's what the user brought            │
+│  • Do not read in main context — may destroy context!    │
 │                                                          │
 └──────────────────────────────────────────────────────────┘
 
@@ -138,148 +139,161 @@ AskUserQuestionTool:
               │
               ▼
      ┌─────────────────┐
-     │  סאב-אייג'נט    │  ◄── קריאה דרך סאב-אייג'נט בלבד!
-     │  (Explore/sonnet)│      לעולם לא ב-main context
+     │  Sub-agent      │  ◄── Read via sub-agent only!
+     │  (Explore/sonnet)│      Never in main context
      └────────┬────────┘
               │
               ▼
-     סיכום דרישות (~60 שורות)
+     Requirements summary (~60 lines)
               │
               ▼
-     Claude שואל שאלות מפורטות
+     Claude asks detailed questions
               │
               ▼
-     epics/XX.md ◄── כתיבה אחרי אישור Diff
+     epics/XX.md ◄── Write after Diff approval
 ```
 
 ---
 
-## כללי ברזל (18 כללים — 0 עד 17)
+## Iron Rules (18 rules — 0 to 17)
 
-### כלל 0: סאב-אייג'נטים (3 תתי-כללים)
+### Rule 0: Sub-agents (3 sub-rules)
 
-**כלל 0a: Sonnet בלבד**
-כל שימוש ב-Task Tool חייב `model: "sonnet"`. לא Haiku, לא Opus.
+**Rule 0a: Sonnet only**
+Every Task Tool use must have `model: "sonnet"`. Not Haiku, not Opus.
 
-**כלל 0b: DOC_SOURCE = סאב-אייג'נט בלבד**
+**Rule 0b: DOC_SOURCE = Local TXT + Sub-agent**
 ```
 ┌──────────────────────────────────────────────────────────┐
-│  ⛔ DOC_SOURCE חייב להיקרא רק דרך סאב-אייגנט!          │
-│     לעולם לא ישירות ב-main context.                     │
-│     המסמך עלול להיות גדול (מאות KB) ולהרוס את ה-context.│
+│  🚀 DOC_SOURCE Local Optimization                        │
+│                                                          │
+│  1. User provides link                                   │
+│  2. Sub-agent downloads → converts to clean TXT          │
+│  3. Saves to .claude/memory/doc-source.txt               │
+│  4. Immediate Epic Detection — display epics to user     │
+│                                                          │
+│  ⚡ Benefits:                                            │
+│  • Fast: local read (~0.1s) instead of WebFetch (~5s)    │
+│  • Reliable: works offline                               │
+│  • UX: immediate epic identification!                    │
+│                                                          │
+│  ⛔ Still required: read only via sub-agent!             │
+│     Never directly in main context.                      │
 └──────────────────────────────────────────────────────────┘
 ```
 
-**כלל 0c: 4 תרחישים שחייבים סאב-אייגנט**
+📐 Full protocol: see `rules/04-local-doc-source.md`
 
-| # | תרחיש | סוג | מה עושה |
-|---|--------|-----|---------|
-| 1 | תחילת Session / אחרי compact | `Explore` | קורא כל הקבצים + מחזיר סיכום 60 שורות |
-| 2 | קריאת מסמך מקור (DOC_SOURCE) | `Explore` | קורא מסמך גדול + מחזיר סיכום דרישות |
-| 3 | בדיקת קישורים בין epics | `Explore` | בודק epics קיימים + מזהה חפיפות |
-| 4 | Cross-Review צולב | `general-purpose` | מנתח סתירות בין 3 ה-Agents |
+**Rule 0c: 4 scenarios that require sub-agent**
 
-**מתי לא צריך סאב-אייגנט:**
-- checkpoint.json — קטן (~200 tokens), קרא ישירות
-- prd-index.json — קטן (~500 tokens), קרא ישירות
-- שאלה בודדת למשתמש — אין צורך בסאב-אייגנט
+| # | Scenario | Type | What it does |
+|---|----------|------|--------------|
+| 1 | Session start / after compact | `Explore` | Reads all files + returns 60-line summary |
+| 2 | Reading source document (DOC_SOURCE) | `Explore` | Reads large document + returns requirements summary |
+| 3 | Checking links between epics | `Explore` | Checks existing epics + identifies overlaps |
+| 4 | Cross-Review analysis | `general-purpose` | Analyzes contradictions between 3 Agents |
 
-**כלל 0d: הודעה למשתמש (שקיפות)**
+**When sub-agent is NOT needed:**
+- checkpoint.json — small (~200 tokens), read directly
+- prd-index.json — small (~500 tokens), read directly
+- Single question to user — no sub-agent needed
+
+**Rule 0d: User notification (transparency)**
 ```
 ┌──────────────────────────────────────────────────────────┐
-│  חובה להודיע למשתמש כשמשתמשים בסאב-אייג'נט:            │
+│  Must notify user when using sub-agent:                  │
 │                                                          │
-│  🔄 לפני: "שולח סאב-אייג'נט לקרוא את [מה]..."          │
-│  ✅ אחרי: "סאב-אייג'נט חזר: [סיכום קצר של התוצאה]"     │
+│  🔄 Before: "Sending sub-agent to read [what]..."        │
+│  ✅ After: "Sub-agent returned: [short summary of result]"│
 │                                                          │
-│  למה חשוב?                                               │
-│  • המשתמש מבין למה יש השהייה                            │
-│  • שקיפות — ברור מה רץ ב-main vs sub-agent              │
-│  • ה-Context הראשי נשאר נקי ומרוכז                      │
+│  Why important?                                          │
+│  • User understands why there's a delay                  │
+│  • Transparency — clear what runs in main vs sub-agent   │
+│  • Main Context stays clean and focused                  │
 │                                                          │
-│  דוגמאות:                                                │
-│  🔄 "שולח סאב-אייג'נט לסרוק את כל קבצי המערכת..."      │
-│  ✅ "סאב-אייג'נט חזר: נמצאו 2 epics, 3 שיעורים"         │
+│  Examples:                                               │
+│  🔄 "Sending sub-agent to scan all system files..."      │
+│  ✅ "Sub-agent returned: found 2 epics, 3 lessons"       │
 │                                                          │
-│  🔄 "שולח סאב-אייג'נט לקרוא את מסמך הדרישות..."        │
-│  ✅ "סאב-אייג'נט חזר: סיכום 45 שורות, 3 user stories"   │
+│  🔄 "Sending sub-agent to read requirements document..." │
+│  ✅ "Sub-agent returned: 45-line summary, 3 user stories"│
 └──────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-### כלל 1: שאלות מובנות
-כל שאלה למשתמש חייבת להיות דרך `AskUserQuestionTool` עם:
-- אופציות ממוספרות (מינימום 3, מקסימום 5 כולל "אחר")
-- 🎯 השלכה לכל אופציה — המשתמש חייב להבין מה כל בחירה גוררת
-- שאלה אחת בכל פעם — לא לשאול 3 שאלות בבת אחת
-- Claude מציע ברירת מחדל — אם יש אופציה מומלצת, סמן אותה
+### Rule 1: Structured Questions
+Every question to user must be via `AskUserQuestionTool` with:
+- Numbered options (minimum 3, maximum 5 including "Other")
+- 🎯 Implication for each option — user must understand what each choice leads to
+- One question at a time — don't ask 3 questions at once
+- Claude suggests default — if there's a recommended option, mark it
 
-📐 פורמט YAML + Anti-Patterns: ראה `rules/01-questions-format.md`
+📐 YAML format + Anti-Patterns: see `rules/01-questions-format.md`
 
 ---
 
-### כלל 2: מודולריות + מגבלת 500 שורות
+### Rule 2: Modularity + 500 Line Limit
 
-**הפרדת Agents:**
-- כל Agent שואל את השאלות שלו בלבד:
-  - **PM** = עסקי (מה, למה) — 9 שאלות
-  - **Architect** = טכני (data, API, validations) — 8 שאלות
-  - **Frontend** = UI/UX (layout, states, accessibility) — 11+1 שאלות
+**Agent Separation:**
+- Each Agent asks only their questions:
+  - **PM** = business (what, why) — 9 questions
+  - **Architect** = technical (data, API, validations) — 8 questions
+  - **Frontend** = UI/UX (layout, states, accessibility) — 11+1 questions
 
-**חשוב:** PM/Architect/Frontend הם **"כובעים"** — לא סוכנים נפרדים.
-Claude הוא מוח אחד שמחליף כובעים. כל ה-context נשאר. אין "העברת מידע" בין סוכנים.
+**Important:** PM/Architect/Frontend are **"hats"** — not separate agents.
+Claude is one brain switching hats. All context remains. No "passing information" between agents.
 
-**מגבלת 500 שורות לכל קובץ — פרוטוקול פיצול:**
+**500 line limit per file — Split protocol:**
 ```
 ┌──────────────────────────────────────────────────────────┐
-│  ⚠️ קובץ epic עובר 500 שורות? → פרוטוקול פיצול:        │
+│  ⚠️ Epic file exceeds 500 lines? → Split protocol:       │
 │                                                          │
-│  1. 🔔 התראה: "הקובץ הגיע ל-[X] שורות (מקסימום 500)"   │
-│  2. 📊 ניתוח: הצע איפה לפצל (Part A+B / Part C+D)      │
-│  3. 💡 הצעה: "אפשר לפצל ל-2 קבצים: XX-name-spec.md    │
+│  1. 🔔 Alert: "File reached [X] lines (max 500)"         │
+│  2. 📊 Analysis: Suggest where to split (Part A+B / C+D) │
+│  3. 💡 Proposal: "Can split to 2 files: XX-name-spec.md  │
 │      + XX-name-frontend.md"                              │
-│  4. ✅ אישור: חכה לאישור המשתמש לפני הפיצול             │
+│  4. ✅ Approval: Wait for user approval before splitting │
 │                                                          │
-│  ❌ אסור: לחתוך באמצע section                            │
-│  ✅ תמיד: לפצל בגבול Part (A|B|C|D)                     │
+│  ❌ Forbidden: cut in middle of section                  │
+│  ✅ Always: split at Part boundary (A|B|C|D)             │
 └──────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-### כלל 3: שמירה בנקודות מפתח (לא אחרי כל תשובה!)
+### Rule 3: Key-point Saving (not after every answer!)
 ```
 ┌──────────────────────────────────────────────────────────┐
-│  ⛔ אסור לשמור checkpoint אחרי כל תשובה!                │
-│     זה מפריע לזרימה ומיותר.                              │
+│  ⛔ Do not save checkpoint after every answer!           │
+│     It disrupts flow and is unnecessary.                 │
 │                                                          │
-│  ✅ שמור רק ב:                                          │
-│     • סיום שלב Agent (PM/Architect/Frontend)            │
-│     • סיום Epic (אחרי Cross-Review)                     │
+│  ✅ Save only at:                                        │
+│     • End of Agent phase (PM/Architect/Frontend)         │
+│     • End of Epic (after Cross-Review)                   │
 │     • /compact                                           │
-│     • סיום Session (hook אוטומטי)                       │
-│     • 50% Context (עם התראה)                            │
+│     • Session end (automatic hook)                       │
+│     • 50% Context (with alert)                           │
 └──────────────────────────────────────────────────────────┘
 ```
 
-**מטריצת שמירה — מתי שומרים מה:**
+**Saving Matrix — when to save what:**
 
-| אירוע | checkpoint | epic file | prd-index |
-|--------|-----------|-----------|-----------|
-| תשובה בודדת | ❌ | ❌ (בזיכרון) | ❌ |
-| **סיום שלב Agent** | ✅ | ✅ | ❌ |
-| **סיום Epic** | ✅ | ✅ | ✅ |
+| Event | checkpoint | epic file | prd-index |
+|-------|------------|-----------|-----------|
+| Single answer | ❌ | ❌ (in memory) | ❌ |
+| **Agent phase end** | ✅ | ✅ | ❌ |
+| **Epic end** | ✅ | ✅ | ✅ |
 | **/compact** | ✅ | ✅ | ❌ |
-| **סיום Session** | ✅ | ✅ | ❌ |
-| **50% Context** | ✅ + התראה | ✅ | ❌ |
+| **Session end** | ✅ | ✅ | ❌ |
+| **50% Context** | ✅ + alert | ✅ | ❌ |
 
-**ב-50% Context:**
+**At 50% Context:**
 ```
-🛑 עצור! → 💾 שמור הכל → 🔄 הצע /compact או Session חדש
+🛑 Stop! → 💾 Save everything → 🔄 Suggest /compact or new Session
 ```
 
-**מבנה checkpoint.json (~200 tokens):**
+**checkpoint.json structure (~200 tokens):**
 ```json
 {
   "timestamp": "2026-02-10T14:30:00",
@@ -289,175 +303,191 @@ Claude הוא מוח אחד שמחליף כובעים. כל ה-context נשאר.
   "completed": ["Q1: Entities", "Q2: Relations", "Q3: APIs", "Q4: Validations"],
   "pending": "Q5: Error Codes",
   "doc_source": "https://docs.google.com/...",
-  "notes": "המשתמש רוצה JWT, לא sessions"
+  "notes": "User wants JWT, not sessions"
 }
 ```
 
 ---
 
-### כלל 4: אפס קצוות פתוחים
-כל פרט חייב להיות מוגדר. אם חסר → שאל. לא להניח, לא לדלג.
+### Rule 4: Zero Open Ends
+Every detail must be defined. If missing → ask. No assumptions, no skipping.
 
-| ❌ לא מספיק | ✅ מספיק |
-|------------|---------|
-| "יוצג הודעת שגיאה" | "יוצג: 'אירעה שגיאה בשמירה. אנא נסה שוב.'" |
-| "הכפתור יעשה submit" | "לחיצה: 1) spinner, 2) POST /api/x, 3) toast ירוק / הודעה אדומה" |
-| "יהיה validation" | "שם — חובה, מינ׳ 2 תווים. אימייל — פורמט. טלפון — 10 ספרות." |
-| "המשתמש יוכל למחוק" | "popup 'האם למחוק?' → כפתור אדום → toast 'נמחק בהצלחה'" |
+| ❌ Not enough | ✅ Enough |
+|---------------|-----------|
+| "Error message will display" | "Display: 'An error occurred while saving. Please try again.'" |
+| "Button will submit" | "Click: 1) spinner, 2) POST /api/x, 3) green toast / red message" |
+| "There will be validation" | "Name — required, min 2 chars. Email — format. Phone — 10 digits." |
+| "User can delete" | "popup 'Are you sure?' → red button → toast 'Deleted successfully'" |
 
 ---
 
-### כלל 5: Plan Mode חובה
+### Rule 5: Plan Mode Required
 
-חובה להפעיל Plan Mode לפני כל משימה משמעותית:
-- אפיון epic חדש
-- שינוי ארכיטקטורה
-- הוספת תכונות שמשפיעות על epics קיימים
-- פיצול קובץ epic (כלל 2)
-- תיקון סתירות שנמצאו ב-Cross-Review
+Plan Mode is required before any significant task:
+- New epic specification
+- Architecture change
+- Adding features that affect existing epics
+- Epic file split (Rule 2)
+- Fixing contradictions found in Cross-Review
 
-**תבנית Plan Mode:**
+**Plan Mode Template:**
 ```
-📋 Plan Mode — [שם המשימה]
+📋 Plan Mode — [Task Name]
 ═══════════════════════════════════════
 
-🎯 משימה: [מה עושים]
+🎯 Task: [what we're doing]
 
-📝 שלבים:
-  1. [שלב ראשון] — [זמן משוער]
-  2. [שלב שני] — [זמן משוער]
-  3. [שלב שלישי] — [זמן משוער]
+📝 Steps:
+  1. [First step] — [estimated time]
+  2. [Second step] — [estimated time]
+  3. [Third step] — [estimated time]
 
-📂 קבצים שיושפעו:
-  - [קובץ 1] — [מה ישתנה]
-  - [קובץ 2] — [מה ישתנה]
+📂 Files affected:
+  - [File 1] — [what changes]
+  - [File 2] — [what changes]
 
-⚠️ סיכונים:
-  - [סיכון 1 + mitigation]
+⚠️ Risks:
+  - [Risk 1 + mitigation]
 
-✅ אישור: המשתמש מאשר לפני ביצוע
+✅ Approval: User approves before execution
 ```
 
 ---
 
-### כלל 6: Cross-Review חובה (7 בדיקות)
-לא כותבים לקובץ epic בלי ש-3 ה-agents אישרו.
-ראה: `rules/02-review-crosscheck.md`
+### Rule 6: Cross-Review Required (7 checks)
+Don't write to epic file without all 3 agents approving.
+See: `rules/02-review-crosscheck.md`
 
-**7 בדיקות חובה:**
+**7 Required Checks:**
 
-| # | בדיקה | מה בודקים |
-|---|--------|-----------|
-| 1 | PM Coverage | כל User Story מכוסה ב-API וב-UI? |
-| 2 | Tech Consistency | Entities תואמים ל-APIs? Auth Levels = User Roles? |
-| 3 | Frontend Mapping | כל endpoint מופיע ב-UI? כל state מטופל? |
-| 4 | Analytics Events | מינימום 12 events — page_view, form_submit, click, error |
-| 5 | SEO Metadata | כל עמוד public — title, description, og:tags |
-| 6 | i18n Consistency | אין hardcoded strings, RTL/LTR מוגדר |
-| 7 | Deferred Documentation | כל מה שנדחה מתועד עם סיבה + אומדן |
+| # | Check | What we verify |
+|---|-------|----------------|
+| 1 | PM Coverage | Every User Story covered in API and UI? |
+| 2 | Tech Consistency | Entities match APIs? Auth Levels = User Roles? |
+| 3 | Frontend Mapping | Every endpoint appears in UI? Every state handled? |
+| 4 | Analytics Events | Minimum 12 events — page_view, form_submit, click, error |
+| 5 | SEO Metadata | Every public page — title, description, og:tags |
+| 6 | i18n Consistency | No hardcoded strings, RTL/LTR defined |
+| 7 | Deferred Documentation | Everything deferred documented with reason + estimate |
 
-**זרימה:**
+**Flow:**
 ```
 PM ✅ → Architect ✅ → Frontend ✅
                                     ↓
-                         [Cross-Review — 7 בדיקות]
+                         [Cross-Review — 7 checks]
                                     ↓
-                    ⚠️ סתירות? → AskUserQuestionTool → תיקון → review חוזר
-                    ✅ הכל חלק? → Diff → אישור → כתיבה לקובץ
+                    ⚠️ Contradictions? → AskUserQuestionTool → fix → review again
+                    ✅ All good? → Diff → approval → write to file
 ```
 
-📐 Structured Summary template + פירוט כל בדיקה: ראה `rules/02-review-crosscheck.md`
+📐 Structured Summary template + each check detailed: see `rules/02-review-crosscheck.md`
 
 ---
 
-### כלל 7: Sweet Spot (Architect)
-לכל שאלה טכנית, הפרד בין: **🟢 חובה ל-MVP** (בלי זה לא עובד), **🔵 המלצה לעתיד** (יחסוך refactor), **❓ המשתמש מחליט** (יש 2 דרכים).
+### Rule 7: Sweet Spot (Architect)
+For every technical question, separate: **🟢 MVP Required** (won't work without), **🔵 Future Recommendation** (will save refactor), **❓ User Decides** (2 valid approaches).
 
 ---
 
-### כלל 8: Epics = פלט מוכן לפיתוח
-כל קובץ ב-`epics/` הוא מסמך אפיון עצמאי עם 4 חלקים:
+### Rule 8: Epics = Dev-Ready Output
+Every file in `epics/` is a standalone specification document with 4 parts:
 - **Part A** — Business Requirements (PM): User Stories, Acceptance Criteria, Roles, KPIs
 - **Part B** — Technical Architecture (Architect): Entities, Relations, APIs, Validations, Error Codes
 - **Part C** — Frontend Specification: Wireframes, States, Responsive, A11y, Design System
 - **Part D** — Cross-Review: Analytics, SEO, i18n, Deferred Items
 
-📐 מבנה מלא עם כל sub-sections: ראה `templates/epic-template.md`
+📐 Full structure with all sub-sections: see `templates/epic-template.md`
 
-**היתרון:** הקובץ → Cursor / Claude Code / Copilot / Windsurf / Bolt → פיתוח ישירות, בלי שאלות.
+**Benefit:** File → Cursor / Claude Code / Copilot / Windsurf / Bolt → development directly, no questions.
 
 ---
 
-### כלל 9: Diff לפני כתיבה
+### Rule 9: Diff Before Write
 ```
 ┌──────────────────────────────────────────────────────────┐
-│  ⛔ אסור לכתוב לקובץ epic בלי אישור מפורש!             │
-│     גם לא "תיקונים קטנים" או "עדכון שדה בודד"          │
+│  ⛔ Do not write to epic file without explicit approval! │
+│     Not even "small fixes" or "single field update"      │
 └──────────────────────────────────────────────────────────┘
 ```
 
-לפני כל כתיבה לקובץ epic:
-1. הצג diff מפורט למשתמש
-2. חכה לאישור מפורש
-3. רק אז כתוב לקובץ
+Before any write to epic file:
+1. Show detailed diff to user
+2. Wait for explicit approval
+3. Only then write to file
 
 ---
 
-### כלל 10: גמישות הוליסטית
-השאלות ב-SKILL.md הן **נקודת פתיחה, לא רשימה סגורה!**
+### Rule 10: Holistic Flexibility
+Questions in SKILL.md are a **starting point, not a closed list!**
 
 ```
-📋 SKILL.md = מינימום חובה + כיוון
-🧠 ה-Agent = מעמיק לפי הצורך
+📋 SKILL.md = required minimum + direction
+🧠 The Agent = goes deeper as needed
 
-דוגמה:
-  PM שואל (מ-SKILL.md): "מי המשתמש?"
-  משתמש עונה: "מנהל חנות"
+Example:
+  PM asks (from SKILL.md): "Who is the user?"
+  User answers: "Store manager"
 
-  PM ממשיך (מהאינטליגנציה שלו):
+  PM continues (from intelligence):
   ┌─
-  │ "האם מנהל חנות יכול לנהל יותר מחנות אחת?"
-  │ "האם יש הבדל בין מנהל פנימי לחיצוני?"
-  │ "האם מנהל חנות רואה את כל העובדים?"
+  │ "Can a store manager manage more than one store?"
+  │ "Is there a difference between internal and external manager?"
+  │ "Does store manager see all employees?"
   └─
 
-✅ שאל חובה מ-SKILL.md
-✅ הוסף שאלות לפי הצורך
-✅ העמק כשיש עמימות
-❌ אל תתעלם משאלות חובה
-❌ אל תשאל שאלות לא רלוונטיות
+✅ Ask required from SKILL.md
+✅ Add questions as needed
+✅ Go deeper when there's ambiguity
+❌ Don't ignore required questions
+❌ Don't ask irrelevant questions
 ```
 
 ---
 
-### כלל 11: לולאת שיפור (lessons.md)
-אחרי כל טעות או תיקון, Claude מזהה דפוס ומעדכן `lessons.md`.
+### Rule 11: Improvement Loop (lessons.md)
+After every mistake or correction, Claude identifies pattern and updates `lessons.md`.
 
-**הלולאה:**
+**The Loop:**
 ```
-טעות → זיהוי דפוס → כתיבת כלל → בדיקה → שיפור
-   ▲                                           │
-   └───────────────────────────────────────────┘
+Mistake → Identify pattern → Write rule → Check → Improve
+   ▲                                              │
+   └──────────────────────────────────────────────┘
 ```
 
-📐 פורמט עדכון lessons.md: ראה `rules/03-reflection.md`
+📐 lessons.md update format: see `rules/03-reflection.md`
 
 ---
 
-### כלל 12: קריאת DOC_SOURCE בכל Session
-אם יש `doc_url` ב-checkpoint, הסאב-אייג'נט ב-SessionStart **חייב** לקרוא אותו מחדש (WebFetch) — לתפוס שינויים בין sessions.
-ראה: שלב 0 (למעלה) + כלל 0b לכללי READ-ONLY.
+### Rule 12: DOC_SOURCE Reading — Local TXT First
+```
+┌──────────────────────────────────────────────────────────┐
+│  🚀 NEW: Local TXT Optimization                          │
+│                                                          │
+│  Session Start → check doc_local_path in checkpoint      │
+│                                                          │
+│  If local file exists:                                   │
+│  ✅ Read from .claude/memory/doc-source.txt (fast!)      │
+│                                                          │
+│  If no local file but doc_url exists:                    │
+│  📥 Download → convert to TXT → save locally             │
+│                                                          │
+│  If user requests refresh:                               │
+│  🔄 "Refresh the document" → re-download from doc_url    │
+└──────────────────────────────────────────────────────────┘
+```
+
+See: Step 0 (above) + Rule 0b + `rules/04-local-doc-source.md`
 
 ---
 
-### כלל 13: טעינת PRD Context (prd-index.json)
-בתחילת כל epic חדש, Claude קורא `prd-index.json` (~500 tokens) כדי:
-- לדעת אילו epics כבר קיימים
-- לזהות entities משותפים
-- לשאול שאלות חכמות מבוססות הקשר
-- לזהות קישורים אוטומטית בין epics
+### Rule 13: PRD Context Loading (prd-index.json)
+At the start of every new epic, Claude reads `prd-index.json` (~500 tokens) to:
+- Know which epics already exist
+- Identify shared entities
+- Ask smart context-based questions
+- Automatically identify links between epics
 
-**מבנה prd-index.json:**
+**prd-index.json structure:**
 ```json
 {
   "epics_completed": 2,
@@ -473,115 +503,115 @@ PM ✅ → Architect ✅ → Frontend ✅
 }
 ```
 
-**שימוש:**
+**Usage:**
 ```
-Architect שואל שאלה חכמה:
-"ראיתי שיש לנו Entity של Product ו-User.
- האם הזמנה מקושרת למשתמש ולמוצרים ספציפיים?"
+Architect asks smart question:
+"I see we have Product and User entities.
+ Is an order linked to a user and specific products?"
 
-⚠️ זיהוי קישורים אוטומטי:
-"ה-epic הזה ישפיע על: user-auth, product-catalog"
+⚠️ Automatic link detection:
+"This epic will affect: user-auth, product-catalog"
 ```
 
 ---
 
-### כלל 14: החלפת כובעים (Hat Switching)
+### Rule 14: Hat Switching
 
 ```
      ┌──────────┐         ┌──────────┐         ┌──────────┐
-     │  🎩 PM   │ ──────► │ 🎩 Arch  │ ──────► │ 🎩 FE   │
-     │ 9 שאלות  │         │ 8 שאלות  │         │ 11+1     │
+     │  🎩 PM   │ ──────► │ 🎩 Arch  │ ──────► │ 🎩 FE    │
+     │ 9 questions│        │ 8 questions│        │ 11+1     │
      └──────────┘         └──────────┘         └──────────┘
         Part A               Part B               Part C
 ```
 
-כש-Claude עובר בין agents: קרא SKILL.md של ה-agent → הודע "🎩 עוברים ל-[Agent]!" → שאל רק שאלות שלו → שמור checkpoint.
+When Claude switches between agents: read agent's SKILL.md → announce "🎩 Switching to [Agent]!" → ask only their questions → save checkpoint.
 
 ---
 
-### כלל 15: Analytics Tracking
-**מינימום 12 events לכל epic.** Claude מתאים את ה-events ל-epic הספציפי.
-כולל: page_view, form_start/submit/error, cta_click, login/signup, feature_used, error_displayed, session_start, scroll_depth.
+### Rule 15: Analytics Tracking
+**Minimum 12 events per epic.** Claude adapts events to the specific epic.
+Includes: page_view, form_start/submit/error, cta_click, login/signup, feature_used, error_displayed, session_start, scroll_depth.
 
-📐 טבלת events מלאה: ראה `rules/02-review-crosscheck.md` בדיקה 4
-
----
-
-### כלל 16: Design System חובה
-כל epic חייב להגדיר Design System מלא: Colors (Primary/Success/Error/Neutrals), Typography (family+weights+sizes), Spacing (grid+padding+margins), Border Radius, Shadows, Theme (Light/Dark/Auto).
+📐 Full events table: see `rules/02-review-crosscheck.md` check 4
 
 ---
 
-### כלל 17: Reflection (סוף כל Session)
-בסוף כל session, בדוק: שאלות שלא הובנו, סתירות, שאלות שחסרו, דפוסים חוזרים, העדפות משתמש.
-אם יש ממצאים → עדכן `lessons.md`
-
-📐 פרוטוקול מלא + Anti-Patterns: ראה `rules/03-reflection.md`
+### Rule 16: Design System Required
+Every epic must define full Design System: Colors (Primary/Success/Error/Neutrals), Typography (family+weights+sizes), Spacing (grid+padding+margins), Border Radius, Shadows, Theme (Light/Dark/Auto).
 
 ---
 
-## סדר Workflow
-📐 ראה `skills/prd-engine/SKILL.md` — סעיף "Workflow — סדר עבודה לכל Epic" (שלבים 0-6).
+### Rule 17: Reflection (End of Every Session)
+At end of every session, check: questions not understood, contradictions, missing questions, recurring patterns, user preferences.
+If findings → update `lessons.md`
+
+📐 Full protocol + Anti-Patterns: see `rules/03-reflection.md`
 
 ---
 
-## דגשים חשובים — רמת פירוט
-> ⚠️ כל Part = epic מוכן לפיתוח, לא skeleton. כל טבלה מלאה, כל Entity עם types+constraints, כל endpoint עם request/response, כל שגיאה בעברית+אנגלית.
+## Workflow Order
+📐 See `skills/prd-engine/SKILL.md` — section "Workflow — Work Order for Each Epic" (steps 0-6).
 
 ---
 
-## Hooks = אוטומציה
-3 Hooks אוטומטיים: **SessionStart** (startup.sh — מדפיס "מוכן!"), **PreCompact** (pre-compact.sh — שומר checkpoint), **Stop** (auto-checkpoint.sh — שומר + reflection + lessons).
+## Important Notes — Detail Level
+> ⚠️ Every Part = dev-ready epic, not skeleton. Every table complete, every Entity with types+constraints, every endpoint with request/response, every error message in Hebrew+English.
 
 ---
 
-## ניווט (דרך AskUserQuestionTool)
-בכל שלב, הצע למשתמש 4 אופציות: **המשך** (שאלה/agent הבא), **חזור** (תקן תשובה קודמת), **סיכום ביניים**, **דלג** (לא מומלץ).
-כל ניווט דרך AskUserQuestionTool עם 🎯 השלכה לכל אופציה.
+## Hooks = Automation
+3 Automatic Hooks: **SessionStart** (startup.sh — prints "Ready!"), **PreCompact** (pre-compact.sh — saves checkpoint), **Stop** (auto-checkpoint.sh — saves + reflection + lessons).
 
 ---
 
-## מבנה הקבצים המלא
+## Navigation (via AskUserQuestionTool)
+At every step, offer user 4 options: **Continue** (next question/agent), **Back** (fix previous answer), **Summary** (interim summary), **Skip** (not recommended).
+All navigation via AskUserQuestionTool with 🎯 implication for each option.
+
+---
+
+## Complete File Structure
 
 ```
 .claude/
-├── CLAUDE.md                    ← 🧠 ה"מוח" — 18 כללי ברזל
+├── CLAUDE.md                    ← 🧠 The "brain" — 18 iron rules
 ├── settings.json                ← 3 Hooks (SessionStart, PreCompact, Stop)
-├── settings.local.json          ← הרשאות WebFetch
+├── settings.local.json          ← WebFetch permissions
 │
 ├── scripts/
-│   └── statusline.sh            ← אחוז Context בצבעים ב-CLI
+│   └── statusline.sh            ← Context percentage in colors in CLI
 │
-├── memory/                      ← 💾 זיכרון מתמשך
-│   ├── checkpoint.json          ← ~200 tokens — איפה עצרנו
-│   ├── prd-index.json           ← ~500 tokens — מפת ה-PRD
-│   ├── lessons.md               ← שיעורים שנלמדו
-│   ├── session-init.json        ← verification מסאב-אייגנט
-│   └── epics/                   ← 📄 אפיונים מוכנים לפיתוח
+├── memory/                      ← 💾 Persistent memory
+│   ├── checkpoint.json          ← ~200 tokens — where we stopped
+│   ├── prd-index.json           ← ~500 tokens — PRD map
+│   ├── lessons.md               ← Lessons learned
+│   ├── session-init.json        ← Sub-agent verification
+│   └── epics/                   ← 📄 Dev-ready specifications
 │       ├── 01-user-auth.md
 │       └── 02-product-catalog.md
 │
-└── skills/prd-engine/           ← ⚙️ מנוע ה-Skill
+└── skills/prd-engine/           ← ⚙️ Skill Engine
     ├── SKILL.md                 ← Main Orchestrator
     ├── config/
-    │   └── workflow.json        ← הגדרות workflow (v2.1.0)
+    │   └── workflow.json        ← Workflow settings (v2.1.0)
     ├── agents/
     │   ├── product-manager/
-    │   │   └── SKILL.md         ← 9 שאלות עסקיות
+    │   │   └── SKILL.md         ← 9 business questions
     │   ├── architect/
-    │   │   └── SKILL.md         ← 8 שאלות טכניות
+    │   │   └── SKILL.md         ← 8 technical questions
     │   └── frontend/
-    │       └── SKILL.md         ← 11+1 שאלות UI/UX
+    │       └── SKILL.md         ← 11+1 UI/UX questions
     ├── rules/
     │   ├── INDEX.md
     │   ├── 01-questions-format.md
     │   ├── 02-review-crosscheck.md
     │   └── 03-reflection.md
     ├── templates/
-    │   ├── epic-template.md     ← תבנית Epic (Parts A-D)
+    │   ├── epic-template.md     ← Epic template (Parts A-D)
     │   ├── checkpoint.json
     │   ├── prd-index.json
-    │   ├── landing-page-guide.md  ← מדריך Landing Page (10 sections)
+    │   ├── landing-page-guide.md  ← Landing Page guide (10 sections)
     │   └── landing-page-anatomy.jpg
     └── hooks/
         ├── startup.sh           ← SessionStart
@@ -591,4 +621,4 @@ Architect שואל שאלה חכמה:
 
 ---
 
-PRD-Engine v2.1.0 | 18 Iron Rules | Multi-Agent Architecture | הרשאות WebFetch: ראה settings.local.json
+PRD-Engine v2.1.0 | 18 Iron Rules | Multi-Agent Architecture | WebFetch permissions: see settings.local.json

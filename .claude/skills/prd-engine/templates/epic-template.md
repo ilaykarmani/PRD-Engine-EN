@@ -1,93 +1,93 @@
 <!--
 📋 DEVELOPMENT-READY SPECIFICATION
 =================================
-קובץ זה הוא אפיון טכני מלא ומוכן לפיתוח.
-ניתן להעתיק קובץ זה ולהזין אותו לכל כלי פיתוח AI:
+This file is a complete technical specification ready for development.
+You can copy this file and feed it to any AI development tool:
   → Cursor / Claude Code / GitHub Copilot / Windsurf / Bolt
-הקובץ כולל את כל המידע הנדרש: דרישות עסקיות, ארכיטקטורה, UI, ו-Cross-Review.
+The file includes all required information: business requirements, architecture, UI, and Cross-Review.
 
 Status: ⏳ In Progress
 Last Updated: [timestamp]
-Epic: [XX] — [שם ה-epic]
-Product: [שם המוצר]
+Epic: [XX] — [epic name]
+Product: [product name]
 -->
 
-# Epic [XX]: [שם ה-Epic]
+# Epic [XX]: [Epic Name]
 
 ---
 
 ## Part A: Business Requirements (PM)
 
-**משתמש עיקרי:** [סוג המשתמש]
-**בעיה:** [מה הבעיה שה-epic פותר]
-**פתרון:** [משפט אחד שמתאר את הפתרון]
-**עדיפות:** [P1/P2/P3] — [נימוק]
+**Primary User:** [user type]
+**Problem:** [what problem does the epic solve]
+**Solution:** [one sentence describing the solution]
+**Priority:** [P1/P2/P3] — [rationale]
 
 ### User Stories
 ```
-US-1: בתור [סוג משתמש 1], אני רוצה [Y] כדי ש[Z]
-US-2: בתור [סוג משתמש 2], אני רוצה [Y] כדי ש[Z]
-US-3: בתור [אדמין], אני רוצה [Y] כדי ש[Z]
+US-1: As [user type 1], I want [Y] so that [Z]
+US-2: As [user type 2], I want [Y] so that [Z]
+US-3: As [admin], I want [Y] so that [Z]
 ```
 
 ### Acceptance Criteria (8-12)
 
 **Performance:**
-- [ ] [קריטריון — LCP, זמן תגובה, וכו']
-- [ ] [קריטריון]
+- [ ] [criterion — LCP, response time, etc.]
+- [ ] [criterion]
 
 **Security:**
-- [ ] [קריטריון — CSRF, rate limiting, וכו']
-- [ ] [קריטריון]
+- [ ] [criterion — CSRF, rate limiting, etc.]
+- [ ] [criterion]
 
 **UX:**
-- [ ] [קריטריון — responsive, accessible, וכו']
-- [ ] [קריטריון]
+- [ ] [criterion — responsive, accessible, etc.]
+- [ ] [criterion]
 
 **Business:**
-- [ ] [קריטריון — conversion, edge cases, וכו']
-- [ ] [קריטריון]
+- [ ] [criterion — conversion, edge cases, etc.]
+- [ ] [criterion]
 
 ### User Roles Table
 
-| # | תפקיד | Login Method | ניתוב אחרי Login | Scope |
+| # | Role | Login Method | Post-Login Routing | Scope |
 |---|--------|-------------|------------------|-------|
-| 1 | [תפקיד] | [method] | [עמוד יעד] | [הרשאות] |
-| 2 | [תפקיד] | [method] | [עמוד יעד] | [הרשאות] |
+| 1 | [role] | [method] | [target page] | [permissions] |
+| 2 | [role] | [method] | [target page] | [permissions] |
 
 ### Edge Cases / Funnel
 
-| שלב | שם | טריגר | פעולה |
+| Stage | Name | Trigger | Action |
 |------|------|--------|--------|
-| 1 | [שלב] | [מה גורם] | [מה קורה] |
-| 2 | [שלב] | [מה גורם] | [מה קורה] |
+| 1 | [stage] | [what causes] | [what happens] |
+| 2 | [stage] | [what causes] | [what happens] |
 
 **Edge Cases:**
-| # | מקרה | התנהגות צפויה | הודעה למשתמש |
+| # | Case | Expected Behavior | User Message |
 |---|------|-------------|-------------|
-| 1 | [מקרה קצה] | [מה קורה] | [הודעה] |
-| 2 | [מקרה קצה] | [מה קורה] | [הודעה] |
+| 1 | [edge case] | [what happens] | [message] |
+| 2 | [edge case] | [what happens] | [message] |
 
 ### KPIs
 
-**[תחום 1 — למשל Landing Page]:**
-| KPI | מדד | יעד | כלי מדידה |
+**[Domain 1 — e.g. Landing Page]:**
+| KPI | Metric | Target | Measurement Tool |
 |-----|------|------|----------|
-| [שם] | [מה מודדים] | [יעד מספרי] | [GA/Mixpanel/וכו'] |
+| [name] | [what we measure] | [numeric target] | [GA/Mixpanel/etc.] |
 
-**[תחום 2 — למשל Login/Signup]:**
-| KPI | מדד | יעד | כלי מדידה |
+**[Domain 2 — e.g. Login/Signup]:**
+| KPI | Metric | Target | Measurement Tool |
 |-----|------|------|----------|
-| [שם] | [מה מודדים] | [יעד מספרי] | [GA/Mixpanel/וכו'] |
+| [name] | [what we measure] | [numeric target] | [GA/Mixpanel/etc.] |
 
 ### 2030 Recommendations (PM)
-1. [המלצה] — [הסבר עסקי + למה זה שווה]
-2. [המלצה] — [הסבר]
-3. [המלצה] — [הסבר]
+1. [recommendation] — [business explanation + why it's worth it]
+2. [recommendation] — [explanation]
+3. [recommendation] — [explanation]
 
 ### Key Decisions (PM)
-- [החלטה + נימוק]
-- [החלטה + נימוק]
+- [decision + rationale]
+- [decision + rationale]
 
 ---
 
@@ -96,30 +96,30 @@ US-3: בתור [אדמין], אני רוצה [Y] כדי ש[Z]
 ### Entities
 
 #### 1. [Entity Name]
-- **מטרה:** [מה ה-entity מייצג במערכת]
-- **שדות:**
+- **Purpose:** [what the entity represents in the system]
+- **Fields:**
 
 | Field | Type | Nullable | Unique | Default | Business Rule |
 |-------|------|----------|--------|---------|---------------|
 | id | UUID | false | true | auto | Primary key |
 | [field] | [type] | [bool] | [bool] | [default] | [rule] |
 
-- **Indexes:** [רשימת indexes]
-- **חוקים עסקיים:** [business rules]
-- **Edge Cases:** [מקרי קצה ספציפיים ל-entity]
+- **Indexes:** [list of indexes]
+- **Business Rules:** [business rules]
+- **Edge Cases:** [entity-specific edge cases]
 
 #### 2. [Entity Name]
-- **מטרה:** [תיאור]
-- **שדות:**
+- **Purpose:** [description]
+- **Fields:**
 
 | Field | Type | Nullable | Unique | Default | Business Rule |
 |-------|------|----------|--------|---------|---------------|
 | id | UUID | false | true | auto | Primary key |
 | [field] | [type] | [bool] | [bool] | [default] | [rule] |
 
-- **Indexes:** [רשימת indexes]
-- **חוקים עסקיים:** [business rules]
-- **Edge Cases:** [מקרי קצה]
+- **Indexes:** [list of indexes]
+- **Business Rules:** [business rules]
+- **Edge Cases:** [edge cases]
 
 ### Relations
 
@@ -129,16 +129,16 @@ US-3: בתור [אדמין], אני רוצה [Y] כדי ש[Z]
 
 ### API Endpoints
 
-| # | Method | Endpoint | Auth | Rate Limit | תיאור | MVP? |
+| # | Method | Endpoint | Auth | Rate Limit | Description | MVP? |
 |---|--------|----------|------|------------|--------|------|
 | 1 | [method] | [path] | [Public/Bearer/Admin] | [X/min] | [desc] | 🟢/🔵 |
 
 **Auth Levels:**
-- **Public** — ללא אותנטיקציה
-- **Bearer** — JWT token נדרש
+- **Public** — no authentication required
+- **Bearer** — JWT token required
 - **Admin** — JWT + role check
 
-**לכל endpoint קריטי:**
+**For each critical endpoint:**
 ```
 [Method] [Path]
   Request Body: { [fields] }
@@ -148,7 +148,7 @@ US-3: בתור [אדמין], אני רוצה [Y] כדי ש[Z]
 
 ### Validations
 
-| שדה | כלל | הודעת שגיאה (HE) | הודעת שגיאה (EN) |
+| Field | Rule | Error Message (HE) | Error Message (EN) |
 |------|------|-------------------|-------------------|
 | [field] | [rule] | [message HE] | [message EN] |
 
@@ -157,37 +157,37 @@ US-3: בתור [אדמין], אני רוצה [Y] כדי ש[Z]
 ### Error Codes
 
 **Auth Errors:**
-| Code | HTTP | מתי | הודעה |
+| Code | HTTP | When | Message |
 |------|------|------|-------|
 | [code] | [status] | [when] | [message] |
 
 **Account Errors:**
-| Code | HTTP | מתי | הודעה |
+| Code | HTTP | When | Message |
 |------|------|------|-------|
 | [code] | [status] | [when] | [message] |
 
 **Not Found:**
-| Code | HTTP | מתי | הודעה |
+| Code | HTTP | When | Message |
 |------|------|------|-------|
 | [code] | [status] | [when] | [message] |
 
 **Validation:**
-| Code | HTTP | מתי | הודעה |
+| Code | HTTP | When | Message |
 |------|------|------|-------|
 | [code] | [status] | [when] | [message] |
 
 **Conflict:**
-| Code | HTTP | מתי | הודעה |
+| Code | HTTP | When | Message |
 |------|------|------|-------|
 | [code] | [status] | [when] | [message] |
 
 **Rate Limit:**
-| Code | HTTP | מתי | הודעה |
+| Code | HTTP | When | Message |
 |------|------|------|-------|
 | [code] | [status] | [when] | [message] |
 
 **Server:**
-| Code | HTTP | מתי | הודעה |
+| Code | HTTP | When | Message |
 |------|------|------|-------|
 | [code] | [status] | [when] | [message] |
 
@@ -196,7 +196,7 @@ US-3: בתור [אדמין], אני רוצה [Y] כדי ש[Z]
 {
   "error": {
     "code": "[ERROR_CODE]",
-    "message": "[הודעת שגיאה]",
+    "message": "[error message]",
     "details": null,
     "field": null,
     "timestamp": "2026-01-01T00:00:00Z",
@@ -207,17 +207,17 @@ US-3: בתור [אדמין], אני רוצה [Y] כדי ש[Z]
 
 ### Logging & Monitoring
 
-**INFO Events** (הצלחות):
+**INFO Events** (successes):
 - [event 1], [event 2], ...
 
-**WARN Events** (חשדות):
+**WARN Events** (suspicions):
 - [event 1], [event 2], ...
 
-**ERROR Events** (כשלונות):
+**ERROR Events** (failures):
 - [event 1], [event 2], ...
 
 **PII Rules:**
-- **לעולם לא לרשום:** passwords, tokens, OTP codes, credit cards
+- **Never log:** passwords, tokens, OTP codes, credit cards
 - **Mask:** email (i***@example.com), phone (05X-XXX-XX12)
 
 **Retention:**
@@ -234,34 +234,34 @@ US-3: בתור [אדמין], אני רוצה [Y] כדי ש[Z]
 
 ### Dependencies
 
-**Forward Dependencies** (ה-epic הזה תלוי ב-):
-- [ ] [entity/epic שחייב להיות מוכן קודם]
+**Forward Dependencies** (this epic depends on):
+- [ ] [entity/epic that must be ready first]
 
-**Side Effects** (ה-epic הזה משפיע על-):
-- [ ] [epics קיימים שיושפעו]
+**Side Effects** (this epic affects):
+- [ ] [existing epics that will be affected]
 
-**Pending Dependencies** (בהמתנה ל-):
-- [ ] [epics שעוד לא אופיינו אבל קשורים]
+**Pending Dependencies** (waiting for):
+- [ ] [epics not yet specified but related]
 
 ### Deferred to Phase 2
-- [מה נדחה ולמה]
+- [what was deferred and why]
 
 ### 2030 Recommendations (Architect)
-1. [המלצה] — [הסבר טכני + למה זה שווה]
-2. [המלצה] — [הסבר]
-3. [המלצה] — [הסבר]
+1. [recommendation] — [technical explanation + why it's worth it]
+2. [recommendation] — [explanation]
+3. [recommendation] — [explanation]
 
 ### Key Decisions (Architect)
-- [החלטה + נימוק]
-- [החלטה + נימוק]
+- [decision + rationale]
+- [decision + rationale]
 
 ---
 
 ## Part C: Frontend Specification (Frontend)
 
 ### Reference & Direction
-**כיוון אסתטי:** [הכיוון שנבחר]
-**Reference:** [תמונה/לינק/מדריך]
+**Aesthetic Direction:** [chosen direction]
+**Reference:** [image/link/guide]
 
 ### ASCII Wireframes
 
@@ -270,15 +270,15 @@ US-3: בתור [אדמין], אני רוצה [Y] כדי ש[Z]
 │              [Page Name]                 │
 ├─────────────────────────────────────────┤
 │                                         │
-│  [Wireframe content — מבנה העמוד       │
-│   בטקסט ASCII עם כל הסקשנים]          │
+│  [Wireframe content — page structure    │
+│   in ASCII text with all sections]      │
 │                                         │
 └─────────────────────────────────────────┘
 ```
 
 ### Layout
-**מבנה:** [תיאור Layout — Split Screen / Single Column / וכו']
-**Grid:** [מערכת Grid — 12 columns / CSS Grid / וכו']
+**Structure:** [layout description — Split Screen / Single Column / etc.]
+**Grid:** [grid system — 12 columns / CSS Grid / etc.]
 
 ### Loading & Empty States
 
@@ -286,60 +286,60 @@ US-3: בתור [אדמין], אני רוצה [Y] כדי ש[Z]
 |-----------|----------------|----------|----------|
 | [component] | [Skeleton/Spinner/Shimmer] | [ms] | [behavior] |
 
-**Empty State:** [תיאור — אייקון + טקסט + CTA]
+**Empty State:** [description — icon + text + CTA]
 
 ### Error Display — 3 Levels
 
-**Level 1 — Inline (שדה):**
+**Level 1 — Inline (field):**
 ```
-שגיאות validation מתחת לשדה הספציפי
-→ גבול אדום (#EF4444)
-→ הודעה באדום מתחת לשדה
-→ אייקון ⚠️
-→ דוגמה: "כתובת אימייל אינה תקינה"
+Validation errors below the specific field
+→ Red border (#EF4444)
+→ Red message below field
+→ Icon ⚠️
+→ Example: "Email address is invalid"
 ```
 
-**Level 2 — Banner (טופס):**
+**Level 2 — Banner (form):**
 ```
-שגיאה ברמת הטופס מעל הטופס
-→ רקע אדום בהיר + גבול אדום
+Form-level error above the form
+→ Light red background + red border
 → Shake animation (0.5s)
-→ דוגמה: "אימייל או סיסמה שגויים"
+→ Example: "Email or password incorrect"
 ```
 
-**Level 3 — Toast (רשת/שרת):**
+**Level 3 — Toast (network/server):**
 ```
-שגיאת רשת/שרת בפינת המסך
-→ Toast בפינה עליונה (או תחתונה)
-→ נעלם אוטומטית אחרי 5 שניות
-→ כפתור X לסגירה
-→ דוגמה: "שגיאת חיבור — נסו שוב"
+Network/server error at screen corner
+→ Toast in top corner (or bottom)
+→ Auto-dismiss after 5 seconds
+→ X button to close
+→ Example: "Connection error — please try again"
 ```
 
 ### Success States
 
-| פעולה | תצוגה | הודעה | משך | ניתוב |
+| Action | Display | Message | Duration | Routing |
 |--------|--------|--------|------|-------|
 | [action] | [Toast/Redirect/Inline] | [message] | [ms] | [to where] |
 
 ### Responsive Breakpoints
 
-| Breakpoint | Width | שינויים |
+| Breakpoint | Width | Changes |
 |-----------|-------|---------|
-| Mobile | < 768px | [שינויים ספציפיים] |
-| Tablet | 768-1024px | [שינויים ספציפיים] |
-| Desktop | > 1024px | [layout ברירת מחדל] |
+| Mobile | < 768px | [specific changes] |
+| Tablet | 768-1024px | [specific changes] |
+| Desktop | > 1024px | [default layout] |
 
 ### Accessibility (WCAG AA)
 
-| קטגוריה | דרישה | יישום |
+| Category | Requirement | Implementation |
 |----------|--------|--------|
-| Keyboard | [tab order, shortcuts] | [פירוט] |
-| Screen Reader | [aria-labels, roles] | [פירוט] |
-| Contrast | [minimum ratios] | [פירוט] |
-| Focus | [visible indicators] | [פירוט] |
-| RTL | [logical properties] | [פירוט] |
-| Forms | [labels, errors, hints] | [פירוט] |
+| Keyboard | [tab order, shortcuts] | [details] |
+| Screen Reader | [aria-labels, roles] | [details] |
+| Contrast | [minimum ratios] | [details] |
+| Focus | [visible indicators] | [details] |
+| RTL | [logical properties] | [details] |
+| Forms | [labels, errors, hints] | [details] |
 
 ### Animations
 
@@ -349,25 +349,25 @@ US-3: בתור [אדמין], אני רוצה [Y] כדי ש[Z]
 
 ### Validation (Frontend)
 
-| שדה | Timing | כלל | הודעת שגיאה |
+| Field | Timing | Rule | Error Message |
 |------|--------|------|------------|
 | [field] | [onBlur/onChange/onSubmit] | [rule] | [message] |
 
 ### i18n System
 
-| פרמטר | ערך |
+| Parameter | Value |
 |--------|------|
-| ספרייה | [next-intl / react-intl] |
-| מבנה קבצי תרגום | [/locales/he.json, /locales/en.json] |
+| Library | [next-intl / react-intl] |
+| Translation File Structure | [/locales/he.json, /locales/en.json] |
 | URL Pattern | [locale prefix: /he/... /en/...] |
 | CSS Logical Properties | [margin-inline-start, padding-inline] |
-| זיהוי שפה | [browser / cookie / URL] |
+| Language Detection | [browser / cookie / URL] |
 | Default Locale | [he] |
 | Supported Locales | [he, en] |
 
 ### Design System
 
-| פרמטר | ערך |
+| Parameter | Value |
 |--------|------|
 | **Theme** | [Light / Dark / Both] |
 | **Primary Color** | [hex] |
@@ -384,40 +384,40 @@ US-3: בתור [אדמין], אני רוצה [Y] כדי ש[Z]
 | **Font Weights** | [Regular 400 / Medium 500 / SemiBold 600 / Bold 700] |
 | **Border Radius** | sm: [X]px / md: [X]px / lg: [X]px / full |
 | **Shadows** | sm: [value] / md: [value] / lg: [value] |
-| **Spacing Base** | [X]px (מכפלות: 4, 8, 12, 16, 24, 32, 48, 64) |
+| **Spacing Base** | [X]px (multiples: 4, 8, 12, 16, 24, 32, 48, 64) |
 | **White Space** | [Generous / Compact / Balanced] |
 
 ### 2030 Recommendations (Frontend)
-1. [המלצה] — [הסבר + למה זה שווה]
-2. [המלצה] — [הסבר]
-3. [המלצה] — [הסבר]
+1. [recommendation] — [explanation + why it's worth it]
+2. [recommendation] — [explanation]
+3. [recommendation] — [explanation]
 
 ### Key Decisions (Frontend)
-- [החלטה + נימוק]
-- [החלטה + נימוק]
+- [decision + rationale]
+- [decision + rationale]
 
 ---
 
 ## Part D: Cross-Review
 
 ### PM Review
-- [ ] כל ה-User Stories מכוסים ע"י API ו-UI
-- [ ] כל ה-KPIs ניתנים למדידה טכנית
-- [ ] כל User Role מקבל את מה שצריך
-- [ממצאים אם יש]
+- [ ] All User Stories covered by API and UI
+- [ ] All KPIs are technically measurable
+- [ ] Every User Role receives what they need
+- [findings if any]
 
 ### Architect Review
-- [ ] הארכיטקטורה עקבית עם ה-UI
-- [ ] Validations תואמים בין Backend ל-Frontend
-- [ ] Error Codes מכסים את כל מצבי ה-UI
-- [ ] Auth Levels תואמים ל-User Roles
-- [ממצאים אם יש]
+- [ ] Architecture is consistent with UI
+- [ ] Validations match between Backend and Frontend
+- [ ] Error Codes cover all UI states
+- [ ] Auth Levels match User Roles
+- [findings if any]
 
 ### Frontend Review
-- [ ] כל ה-UI מכוסה ע"י ה-API
-- [ ] Error 3 Levels מכסים את כל Error Codes
-- [ ] Success States מוגדרים לכל פעולה
-- [ממצאים אם יש]
+- [ ] All UI is covered by the API
+- [ ] Error 3 Levels cover all Error Codes
+- [ ] Success States defined for every action
+- [findings if any]
 
 ### Analytics Events
 
@@ -430,42 +430,42 @@ US-3: בתור [אדמין], אני רוצה [Y] כדי ש[Z]
 
 ### SEO Metadata
 
-**[שם עמוד 1]:**
-| Meta Tag | ערך |
+**[Page name 1]:**
+| Meta Tag | Value |
 |----------|------|
-| title | [עד 60 תווים] |
-| description | [עד 160 תווים] |
-| og:title | [כותרת] |
-| og:description | [תיאור] |
+| title | [up to 60 chars] |
+| description | [up to 160 chars] |
+| og:title | [title] |
+| og:description | [description] |
 | og:image | [URL] |
 | og:type | website |
 | canonical | [URL] |
 
 ### i18n Consistency Check
-- [ ] אין hardcoded strings
-- [ ] כל הודעות שגיאה עם מפתח תרגום
-- [ ] RTL/LTR מוגדר — CSS logical properties
-- [ ] תאריכים ומספרים — Intl APIs
+- [ ] No hardcoded strings
+- [ ] All error messages with translation key
+- [ ] RTL/LTR defined — CSS logical properties
+- [ ] Dates and numbers — Intl APIs
 
 ### Deferred Items (Phase 2)
 
-| # | פריט שנדחה | סיבה | אומדן מאמץ | תלויות | Agent מקור |
+| # | Deferred Item | Reason | Effort Estimate | Dependencies | Source Agent |
 |---|-----------|------|-----------|--------|-----------|
-| 1 | [שם] | [סיבה] | [S/M/L] | [תלויות] | [PM/Arch/FE] |
+| 1 | [name] | [reason] | [S/M/L] | [dependencies] | [PM/Arch/FE] |
 
 ### Review Summary
 ```
-✅ פערים שנמצאו: [X]
-✅ פערים שנסגרו: [Y]
-⏸️ נדחה ל-Phase 2: [Z]
-📊 סטטוס: [Epic מוכן לפיתוח ✅ / נדרש תיקון ⚠️]
+✅ Gaps found: [X]
+✅ Gaps closed: [Y]
+⏸️ Deferred to Phase 2: [Z]
+📊 Status: [Epic ready for development ✅ / Fix required ⚠️]
 ```
 
 ---
 
 ## Key Decisions (All Agents)
 
-| # | החלטה | נימוק | Agent |
+| # | Decision | Rationale | Agent |
 |---|--------|--------|-------|
-| 1 | [החלטה] | [למה] | [PM/Arch/FE] |
-| 2 | [החלטה] | [למה] | [PM/Arch/FE] |
+| 1 | [decision] | [why] | [PM/Arch/FE] |
+| 2 | [decision] | [why] | [PM/Arch/FE] |

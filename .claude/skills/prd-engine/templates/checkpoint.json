@@ -3,6 +3,8 @@
   "language": "[LANGUAGE]",
   "doc_source": "[DOC_SOURCE]",
   "doc_url": "[DOC_URL]",
+  "doc_local_path": null,
+  "detected_epics": [],
   "last_saved": null,
   "session_ended": false,
   "current_epic": null,
